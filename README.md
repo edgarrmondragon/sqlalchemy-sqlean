@@ -36,6 +36,23 @@ with engine.connect() as conn:
 
 By default, `sqlean.py` disables all [SQLite extensions](https://github.com/nalgeon/sqlean.py#extensions). To enable all of them, pass `extensions=all` as a query parameter to the connection string. Or use a comma-separated list of extensions to enable only some of them, e.g. `extensions=ipaddr,crypto`.
 
+### Alternatives
+
+Note that you don't strictly need this driver to use `sqlean.py`. You can use the `sqlean` dialect directly:
+
+```python
+import sqlean
+from sqlalchemy import create_engine, text
+
+sqlean.extensions.enable_all()
+engine = create_engine("sqlite:///:memory:", module=sqlean)
+
+with engine.connect() as conn:
+    result = conn.execute(text("SELECT ipfamily('192.168.1.1')"))
+    print(result.scalar())  # 4
+```
+
+
 ## License
 
 `sqlean-driver` is distributed under the terms of the [MIT](https://spdx.org/licenses/MIT.html) license.
