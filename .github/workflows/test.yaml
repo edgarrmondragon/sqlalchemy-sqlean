@@ -25,4 +25,32 @@ jobs:
                 pipx install hatch
             - name: Run tests
               run: |
-                hatch run cov
+                hatch run test-cov
+            - uses: actions/upload-artifact@v3
+              with:
+                name: coverage-data
+                path: ".coverage.*"
+
+    coverage:
+        runs-on: ubuntu-latest
+        needs: test
+        steps:
+            - uses: actions/checkout@v3
+            - uses: actions/setup-python@v4
+              with:
+                  python-version: "3.11"
+            - name: Install dependencies
+              env:
+                PIP_CONSTRAINT: .github/workflows/constraints.txt
+              run: |
+                pipx install hatch
+            - uses: actions/download-artifact@v3
+              with:
+                name: coverage-data
+            - name: Combine coverage data
+              run: |
+                hatch run cov-report
+            - uses: codecov/codecov-action@v3
+              with:
+                fail_ci_if_error: true
+                token: ${{ secrets.CODECOV_TOKEN }}
