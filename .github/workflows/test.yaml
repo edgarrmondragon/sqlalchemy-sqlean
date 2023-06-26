@@ -24,7 +24,7 @@ jobs:
                 pipx install hatch
             - name: Run lint
               run: |
-                hatch run style-gh
+                hatch run lint:style-gh
     test:
         name: Pytest
         runs-on: ubuntu-latest
