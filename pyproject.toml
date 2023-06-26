@@ -1,5 +1,5 @@
 [build-system]
-requires = ["hatchling"]
+requires = ["hatchling", "hatch-vcs"]
 build-backend = "hatchling.build"
 
 [project]
@@ -41,7 +41,7 @@ Issues = "https://github.com/edgarrmondragon/sqlean-driver/issues"
 Source = "https://github.com/edgarrmondragon/sqlean-driver"
 
 [tool.hatch.version]
-path = "src/sqlean_driver/__about__.py"
+source = "vcs"
 
 [tool.hatch.envs.default]
 dependencies = ["coverage[toml]>=6.5", "pytest"]

@@ -1,7 +1,7 @@
 # sqlean-driver
 
-[![PyPI - Version](https://img.shields.io/pypi/v/-.svg)](https://pypi.org/project/sqlean-driver)
-[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/-.svg)](https://pypi.org/project/sqlean-driver)
+[![PyPI - Version](https://img.shields.io/pypi/v/sqlean-driver.svg)](https://pypi.org/project/sqlean-driver)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/sqlean-driver.svg)](https://pypi.org/project/sqlean-driver)
 
 A SQLAlchemy driver for [`sqlean.py`](https://github.com/nalgeon/sqlean.py).
 
