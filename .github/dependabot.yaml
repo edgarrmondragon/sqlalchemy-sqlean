@@ -1,0 +1,9 @@
+version: 2
+updates:
+  - directory: /
+    package-ecosystem: pip
+    schedule:
+      interval: weekly
+      timezone: America/Mexico_City
+    assignees:
+      - "edgarrmondragon"
