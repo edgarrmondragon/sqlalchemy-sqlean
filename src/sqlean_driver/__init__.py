@@ -3,11 +3,15 @@
 from __future__ import annotations
 
 import typing as t
+from importlib.metadata import version
 
 from sqlalchemy.dialects.sqlite.pysqlite import SQLiteDialect_pysqlite
 
 if t.TYPE_CHECKING:
     from sqlalchemy.engine.url import URL
+
+
+__version__ = version(__package__)
 
 
 class SQLeanDialect(SQLiteDialect_pysqlite):
