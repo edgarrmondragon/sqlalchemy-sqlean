@@ -10,6 +10,8 @@ A SQLAlchemy driver for [`sqlean.py`](https://github.com/nalgeon/sqlean.py).
 **Table of Contents**
 
 - [Installation](#installation)
+- [Usage](#usage)
+  - [Extensions](#extensions)
 - [License](#license)
 
 ## Installation
