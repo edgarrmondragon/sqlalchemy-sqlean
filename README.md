@@ -29,7 +29,7 @@ engine = create_engine("sqlite+sqlean:///:memory:?extensions=all")
 
 with engine.connect() as conn:
     result = conn.execute(text("SELECT ipfamily('192.168.1.1')"))
-    print(result.scalar())
+    print(result.scalar())  # 4
 ```
 
 ### Extensions
