@@ -39,7 +39,7 @@ By default, `sqlean.py` disables all [SQLite extensions](https://github.com/nalg
 
 ### Alternatives
 
-Note that you don't strictly need this driver to use `sqlean.py`. You can use the `sqlean` dialect directly:
+Note that you don't strictly need this driver to use `sqlean.py`. You can supply `sqlean` as the [`module`](https://docs.sqlalchemy.org/en/20/core/engines.html#sqlalchemy.create_engine.params.module) parameter:
 
 ```python
 import sqlean
