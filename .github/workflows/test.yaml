@@ -7,6 +7,10 @@ on:
         branches: [ main ]
     workflow_dispatch: {}
 
+concurrency:
+    cancel-in-progress: true
+    group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+
 jobs:
     lint:
         name: Lint
