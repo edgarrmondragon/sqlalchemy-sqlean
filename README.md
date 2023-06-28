@@ -53,6 +53,21 @@ with engine.connect() as conn:
     print(result.scalar())  # 4
 ```
 
+## Development
+
+This project uses [Hatch](https://hatch.pypa.io/) to manage the development environment, so make sure you have it installed.
+
+### Run tests and coverage
+
+```console
+hatch run cov
+```
+
+### Run linter
+
+```console
+hatch run lint:style
+```
 
 ## License
 
