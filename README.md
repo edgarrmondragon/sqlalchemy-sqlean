@@ -24,12 +24,12 @@ pip install sqlean-driver
 ## Usage
 
 ```python
-from sqlalchemy import create_engine, text
+from sqlalchemy import create_engine, func, select
 
 engine = create_engine("sqlite+sqlean:///:memory:?extensions=all")
 
 with engine.connect() as conn:
-    result = conn.execute(text("SELECT ipfamily('192.168.1.1')"))
+    result = conn.execute(select(func.ipfamily("192.168.1.1")))
     print(result.scalar())  # 4
 ```
 
@@ -43,13 +43,13 @@ Note that you don't strictly need this driver to use `sqlean.py`. You can supply
 
 ```python
 import sqlean
-from sqlalchemy import create_engine, text
+from sqlalchemy import create_engine, func, select
 
 sqlean.extensions.enable_all()
 engine = create_engine("sqlite:///:memory:", module=sqlean)
 
 with engine.connect() as conn:
-    result = conn.execute(text("SELECT ipfamily('192.168.1.1')"))
+    result = conn.execute(select(func.ipfamily("192.168.1.1")))
     print(result.scalar())  # 4
 ```
 
