@@ -36,7 +36,6 @@ def test_sql(engine: Engine):
     assert result.fetchone() == (1,)
 
 
-
 def test_no_extensions(engine: Engine):
     """Test that the extensions are not loaded."""
     with pytest.raises(OperationalError), engine.connect() as conn:
