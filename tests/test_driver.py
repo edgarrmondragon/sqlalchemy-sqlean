@@ -6,6 +6,7 @@ import typing as t
 
 import pytest
 from sqlalchemy import create_engine, text
+from sqlalchemy.exc import OperationalError
 
 if t.TYPE_CHECKING:
     from sqlalchemy.engine import Engine
@@ -33,6 +34,12 @@ def test_sql(engine: Engine):
     with engine.connect() as conn:
         result = conn.execute(text("SELECT 1"))
     assert result.fetchone() == (1,)
+
+
+def test_no_extensions(engine: Engine):
+    """Test that the extensions are not loaded."""
+    with pytest.raises(OperationalError), engine.connect() as conn:
+        conn.execute(text("SELECT median(1)"))
 
 
 @pytest.mark.parametrize(
