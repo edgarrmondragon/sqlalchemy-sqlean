@@ -96,7 +96,7 @@ jobs:
             - name: Create coverage XML report
               run: |
                 hatch run cov-xml
-            # - uses: codecov/codecov-action@v3
-            #   with:
-            #     fail_ci_if_error: true
-            #     token: ${{ secrets.CODECOV_TOKEN }}
+            - uses: codecov/codecov-action@v3
+              with:
+                fail_ci_if_error: true
+                token: ${{ secrets.CODECOV_TOKEN }}
