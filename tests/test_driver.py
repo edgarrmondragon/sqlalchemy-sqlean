@@ -100,7 +100,6 @@ def test_extensions(extensions: str, query: Select, expected: tuple):
     assert result.fetchone() == expected
 
 
-
 def test_e2e_sql():
     """Test that the SQL works."""
     url = "sqlite+sqlean:///:memory:?extensions=all"
