@@ -24,12 +24,12 @@ pip install sqlean-driver
 ## Usage
 
 ```python
-from sqlalchemy import create_engine, text
+from sqlalchemy import create_engine, func, select
 
 engine = create_engine("sqlite+sqlean:///:memory:?extensions=all")
 
 with engine.connect() as conn:
-    result = conn.execute(text("SELECT ipfamily('192.168.1.1')"))
+    result = conn.execute(select(func.ipfamily("192.168.1.1")))
     print(result.scalar())  # 4
 ```
 
@@ -39,17 +39,17 @@ By default, `sqlean.py` disables all [SQLite extensions](https://github.com/nalg
 
 ### Alternatives
 
-Note that you don't strictly need this driver to use `sqlean.py`. You can supply `sqlean` as the [`module`](https://docs.sqlalchemy.org/en/20/core/engines.html#sqlalchemy.create_engine.params.module) parameter:
+Note that you don't strictly need this driver to use `sqlean.py` with SQLAlchemy. You can supply `sqlean` as the [`module`](https://docs.sqlalchemy.org/en/20/core/engines.html#sqlalchemy.create_engine.params.module) parameter to `create_engine`:
 
 ```python
 import sqlean
-from sqlalchemy import create_engine, text
+from sqlalchemy import create_engine, func, select
 
 sqlean.extensions.enable_all()
 engine = create_engine("sqlite:///:memory:", module=sqlean)
 
 with engine.connect() as conn:
-    result = conn.execute(text("SELECT ipfamily('192.168.1.1')"))
+    result = conn.execute(select(func.ipfamily("192.168.1.1")))
     print(result.scalar())  # 4
 ```
 
@@ -67,6 +67,12 @@ hatch run cov
 
 ```console
 hatch run lint:style
+```
+
+### Run type checker
+
+```console
+hatch run typing:check
 ```
 
 ## License

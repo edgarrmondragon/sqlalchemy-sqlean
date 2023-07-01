@@ -55,20 +55,34 @@ cov = ["test-cov", "cov-report"]
 [[tool.hatch.envs.all.matrix]]
 python = ["3.8", "3.9", "3.10", "3.11", "3.12"]
 
+[tool.hatch.envs.typing]
+dependencies = ["mypy>=1.0.0", "pytest"]
+[tool.hatch.envs.typing.scripts]
+check = "mypy --install-types --non-interactive {args:src/sqlean_driver tests}"
+
 [tool.hatch.envs.lint]
 detached = true
 dependencies = ["black>=23.1.0", "mypy>=1.0.0", "ruff>=0.0.243"]
 [tool.hatch.envs.lint.scripts]
-typing = "mypy --install-types --non-interactive {args:src/sqlean_driver tests}"
 style = ["ruff check {args:.}", "black --check --diff {args:.}"]
 style-gh = ["ruff check {args:.} --format github", "black --check --diff {args:.}"]
 fmt = ["black {args:.}", "ruff --fix {args:.}", "style"]
-all = ["style", "typing"]
 
 [tool.black]
 target-version = ["py38"]
 line-length = 100
 skip-string-normalization = true
+
+[tool.mypy]
+warn_unreachable = true
+warn_unused_configs = true
+warn_unused_ignores = true
+
+[[tool.mypy.overrides]]
+ignore_missing_imports = true
+module = [
+  "sqlean.*",
+]
 
 [tool.pytest]
 addopts = ["-vv"]
