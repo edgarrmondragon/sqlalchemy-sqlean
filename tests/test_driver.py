@@ -6,8 +6,9 @@ import typing as t
 from types import ModuleType
 
 import pytest
-from sqlalchemy import column, create_engine, func, select
+from sqlalchemy import Column, MetaData, Table, column, create_engine, func, insert, literal, select
 from sqlalchemy.exc import OperationalError
+from sqlalchemy.types import Integer, String
 
 if t.TYPE_CHECKING:
     from sqlalchemy.engine import Engine
@@ -97,3 +98,47 @@ def test_extensions(extensions: str, query: Select, expected: tuple):
     with engine.connect() as conn:
         result = conn.execute(query)
     assert result.fetchone() == expected
+
+
+
+def test_e2e_sql():
+    """Test that the SQL works."""
+    url = "sqlite+sqlean:///:memory:?extensions=all"
+    engine = create_engine(url)
+
+    metadata = MetaData()
+    table = Table(
+        "example",
+        metadata,
+        Column("id", Integer, primary_key=True),
+        Column("ip", String),
+        Column("network", String),
+        Column("family", Integer),
+    )
+
+    metadata.create_all(engine)
+
+    with engine.connect() as conn:
+        insert_sql = insert(table).from_select(
+            [
+                table.c.ip,
+                table.c.network,
+                table.c.family,
+            ],
+            select(
+                literal("192.168.1.1"),
+                func.ipnetwork("192.168.1.1").label("network"),
+                func.ipfamily("192.168.1.1").label("family"),
+            ),
+        )
+
+        result = conn.execute(insert_sql)
+        conn.commit()
+        select_sql = select(
+            table.c.ip,
+            table.c.network,
+            table.c.family,
+        )
+        result = conn.execute(select_sql)
+
+    assert result.fetchone() == ("192.168.1.1", "192.168.1.1/32", 4)
