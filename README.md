@@ -69,6 +69,12 @@ hatch run cov
 hatch run lint:style
 ```
 
+### Run type checker
+
+```console
+hatch run typing:check
+```
+
 ## License
 
 `sqlean-driver` is distributed under the terms of the [MIT](https://spdx.org/licenses/MIT.html) license.
