@@ -29,6 +29,25 @@ jobs:
             - name: Run lint
               run: |
                 hatch run lint:style-gh
+
+    typing:
+      name: Typing
+      runs-on: ubuntu-latest
+      steps:
+          - uses: actions/checkout@v3
+          - uses: actions/setup-python@v4
+            with:
+                cache: pip
+                python-version: "3.11"
+          - name: Install dependencies
+            env:
+              PIP_CONSTRAINT: .github/workflows/constraints.txt
+            run: |
+              pipx install hatch
+          - name: Run typing
+            run: |
+              hatch run typing:check
+
     test:
         name: Pytest
         runs-on: ubuntu-latest
