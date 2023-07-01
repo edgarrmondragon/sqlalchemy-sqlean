@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import typing as t
+from types import ModuleType
 
 import pytest
 from sqlalchemy import column, create_engine, func, select
@@ -10,6 +11,7 @@ from sqlalchemy.exc import OperationalError
 
 if t.TYPE_CHECKING:
     from sqlalchemy.engine import Engine
+    from sqlalchemy.sql.selectable import Select
 
 
 @pytest.fixture()
@@ -26,6 +28,7 @@ def test_driver_name(engine: Engine):
 
 def test_driver_dbapi(engine: Engine):
     """Test that the DBAPI is sqlean."""
+    assert isinstance(engine.dialect.dbapi, ModuleType)
     assert engine.dialect.dbapi.__name__ == "sqlean"
 
 
@@ -87,7 +90,7 @@ def test_no_extensions(engine: Engine):
     ],
     ids=["all", "stats", "crypto", "ipaddr", "multiple"],
 )
-def test_extensions(extensions: str, query: str, expected: tuple):
+def test_extensions(extensions: str, query: Select, expected: tuple):
     """Test that the extensions work."""
     url = f"sqlite+sqlean:///:memory:?extensions={extensions}"
     engine = create_engine(url)
