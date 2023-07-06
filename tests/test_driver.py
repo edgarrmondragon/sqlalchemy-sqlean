@@ -122,6 +122,10 @@ def test_extensions(extensions: str, query: Select, expected: tuple):
     assert result.fetchone() == expected
 
 
+@pytest.mark.xfail(
+    sys.platform == "win32",
+    reason="'ipaddr' extension not available on Windows",
+)
 def test_e2e_sql():
     """Test that the SQL works."""
     url = "sqlite+sqlean:///:memory:?extensions=all"
