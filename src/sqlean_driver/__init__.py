@@ -23,7 +23,7 @@ class SQLeanDialect(SQLiteDialect_pysqlite):
     supports_statement_cache = True
 
     @classmethod
-    def import_dbapi(cls: type[SQLeanDialect]) -> ModuleType:
+    def dbapi(cls: type[SQLeanDialect]) -> ModuleType:
         """Return the DBAPI module."""
         import sqlean
 
