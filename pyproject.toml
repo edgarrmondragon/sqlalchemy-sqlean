@@ -83,7 +83,7 @@ module = [
   "sqlean.*",
 ]
 
-[tool.pytest]
+[tool.pytest.ini_options]
 addopts = ["-vv"]
 
 [tool.ruff]
