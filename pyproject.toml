@@ -13,13 +13,25 @@ keywords = []
 authors = [{ name = "Edgar Ramírez Mondragón", email = "edgarrm358@gmail.com" }]
 classifiers = [
   "Development Status :: 4 - Beta",
-  "Programming Language :: Python",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Education",
+  "Intended Audience :: Information Technology",
+  "Intended Audience :: System Administrators",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
   "Programming Language :: Python :: 3.8",
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: Implementation :: CPython",
-  "Programming Language :: Python :: Implementation :: PyPy",
+  "Programming Language :: SQL",
+  "Topic :: Database",
+  "Topic :: Software Development",
+  "Topic :: Software Development :: Libraries",
+  "Topic :: Software Development :: Libraries :: Application Frameworks",
+  "Topic :: Software Development :: Libraries :: Python Modules",
 ]
 dependencies = [
   "sqlalchemy>=1.4.0",
@@ -83,7 +95,7 @@ module = [
   "sqlean.*",
 ]
 
-[tool.pytest]
+[tool.pytest.ini_options]
 addopts = ["-vv"]
 
 [tool.ruff]
