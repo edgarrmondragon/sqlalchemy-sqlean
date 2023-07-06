@@ -23,7 +23,7 @@ class SQLeanDialect(SQLiteDialect_pysqlite):
     supports_statement_cache = True
 
     @classmethod
-    def import_dbapi(cls: type[SQLeanDialect]) -> ModuleType:
+    def dbapi(cls: type[SQLeanDialect]) -> ModuleType:  # type: ignore[override]
         """Return the DBAPI module."""
         import sqlean
 
@@ -35,8 +35,8 @@ class SQLeanDialect(SQLiteDialect_pysqlite):
         extensions = query if isinstance(query, tuple) else query.split(",")
 
         if "all" in extensions:
-            self.dbapi.extensions.enable_all()  # type: ignore[union-attr]
+            self.dbapi.extensions.enable_all()  # type: ignore[attr-defined]
         else:
-            self.dbapi.extensions.enable(*extensions)  # type: ignore[union-attr]
+            self.dbapi.extensions.enable(*extensions)  # type: ignore[attr-defined]
 
         return super().on_connect_url(url)

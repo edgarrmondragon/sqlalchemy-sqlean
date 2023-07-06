@@ -49,11 +49,12 @@ jobs:
               hatch run typing:check
 
     test:
-        name: Pytest
+        name: Pytest (Python ${{ matrix.python-version }}, SQLAlchemy ${{ matrix.sqlalchemy-version }})
         runs-on: ubuntu-latest
         strategy:
             matrix:
                 python-version: ["3.8", "3.9", "3.10", "3.11"]
+                sqlalchemy-version: ["1", "2"]
         steps:
             - uses: actions/checkout@v3
             - uses: actions/setup-python@v4
@@ -66,6 +67,8 @@ jobs:
               run: |
                 pipx install hatch
             - name: Run tests
+              env:
+                SQLALCHEMY_VERSION: ${{ matrix.sqlalchemy-version }}
               run: |
                 hatch run test-cov
             - uses: actions/upload-artifact@v3
