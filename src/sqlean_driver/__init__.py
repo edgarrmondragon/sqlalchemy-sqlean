@@ -24,6 +24,14 @@ class SQLeanDialect(SQLiteDialect_pysqlite):
 
     @classmethod
     def dbapi(cls: type[SQLeanDialect]) -> ModuleType:  # type: ignore[override]
+        """Return the DBAPI module.
+
+        NOTE: This is a legacy method that will stop being used by SQLAlchemy at some point.
+        """
+        return cls.import_dbapi()
+
+    @classmethod
+    def import_dbapi(cls: type[SQLeanDialect]) -> ModuleType:
         """Return the DBAPI module."""
         import sqlean
 
