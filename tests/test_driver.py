@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import math
+import sys
 import typing as t
 from types import ModuleType
 
@@ -54,7 +56,7 @@ def test_no_extensions(engine: Engine):
 @pytest.mark.parametrize(
     ("extensions", "query", "expected"),
     [
-        (
+        pytest.param(
             "all",
             select(
                 func.hex(func.md5(func.concat("hello", column("value")))).label("crypto"),
@@ -64,7 +66,7 @@ def test_no_extensions(engine: Engine):
             ),
             ("203AD5FFA1D7C650AD681FDFF3965CD2", 50),
         ),
-        (
+        pytest.param(
             "stats",
             select(
                 func.median(column("value")),
@@ -73,22 +75,42 @@ def test_no_extensions(engine: Engine):
             ),
             (50,),
         ),
-        ("crypto", select(func.hex(func.md5("hello"))), ("5D41402ABC4B2A76B9719D911017C592",)),
-        (
+        pytest.param(
+            "crypto",
+            select(func.hex(func.md5("hello"))),
+            ("5D41402ABC4B2A76B9719D911017C592",),
+        ),
+        pytest.param(
             "ipaddr",
             select(func.ipfamily("192.168.1.1")),
             (4,),
+            marks=pytest.mark.xfail(
+                sys.platform == "win32",
+                reason="'ipaddr' extension not available on Windows",
+            ),
         ),
-        (
+        pytest.param(
+            "math,crypto",
+            select(
+                func.trunc(func.sin(math.pi / 2)).label("val"),
+                func.hex(func.md5("hello")).label("hash"),
+            ),
+            (1.0, "5D41402ABC4B2A76B9719D911017C592"),
+        ),
+        pytest.param(
             "ipaddr,crypto",
             select(
                 func.ipnetwork("192.168.16.12/24").label("network"),
                 func.hex(func.md5("hello")).label("hash"),
             ),
             ("192.168.16.0/24", "5D41402ABC4B2A76B9719D911017C592"),
+            marks=pytest.mark.xfail(
+                sys.platform == "win32",
+                reason="'ipaddr' extension not available on Windows",
+            ),
         ),
     ],
-    ids=["all", "stats", "crypto", "ipaddr", "multiple"],
+    ids=["all", "stats", "crypto", "ipaddr", "math+crypto", "ipaddr+crypto"],
 )
 def test_extensions(extensions: str, query: Select, expected: tuple):
     """Test that the extensions work."""
