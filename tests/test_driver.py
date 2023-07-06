@@ -75,7 +75,11 @@ def test_no_extensions(engine: Engine):
             ),
             (50,),
         ),
-        pytest.param("crypto", select(func.hex(func.md5("hello"))), ("5D41402ABC4B2A76B9719D911017C592",)),
+        pytest.param(
+            "crypto",
+            select(func.hex(func.md5("hello"))),
+            ("5D41402ABC4B2A76B9719D911017C592",),
+        ),
         pytest.param(
             "ipaddr",
             select(func.ipfamily("192.168.1.1")),
