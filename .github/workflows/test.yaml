@@ -50,7 +50,7 @@ jobs:
 
     test:
         name: Pytest (Python ${{ matrix.python-version }}, ${{ matrix.os }}, SQLAlchemy ${{ matrix.sqlalchemy-version }})
-        runs-on: ubuntu-latest
+        runs-on: ${{ matrix.os }}
         strategy:
             matrix:
                 os: ["ubuntu-latest"]
