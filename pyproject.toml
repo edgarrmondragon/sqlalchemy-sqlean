@@ -56,7 +56,12 @@ Source = "https://github.com/edgarrmondragon/sqlean-driver"
 source = "vcs"
 
 [tool.hatch.envs.default]
-dependencies = ["coverage[toml]>=6.5", "pytest", "sqlalchemy=={env:SQLALCHEMY_VERSION:2.*}"]
+dependencies = [
+  "coverage[toml]>=6.5",
+  "pytest",
+  "pytest-github-actions-annotate-failures",
+  "sqlalchemy=={env:SQLALCHEMY_VERSION:2.*}",
+]
 [tool.hatch.envs.default.scripts]
 test = "pytest {args:tests}"
 test-cov = "coverage run -m pytest {args:tests}"
