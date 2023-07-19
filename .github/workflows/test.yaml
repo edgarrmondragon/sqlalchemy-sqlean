@@ -51,12 +51,12 @@ jobs:
     test:
         name: Pytest (Python ${{ matrix.python-version }}, ${{ matrix.os }}, SQLAlchemy ${{ matrix.sqlalchemy-version }})
         runs-on: ${{ matrix.os }}
-        continue-on-error: ${{ matrix.python-version == '3.12-dev' }}
+        continue-on-error: ${{ matrix.python-version == '3.12' }}
         strategy:
             fail-fast: false
             matrix:
                 os: ["ubuntu-latest"]
-                python-version: ["3.8", "3.9", "3.10", "3.11", "3.12-dev"]
+                python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
                 sqlalchemy-version: ["1.*", "2.*"]
                 include:
                     - python-version: "3.11"
@@ -72,6 +72,7 @@ jobs:
               with:
                   cache: pip
                   python-version: ${{ matrix.python-version }}
+                  allow-prereleases: true
             - name: Install dependencies
               env:
                 PIP_CONSTRAINT: .github/workflows/constraints.txt
