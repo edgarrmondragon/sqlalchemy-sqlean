@@ -38,6 +38,7 @@ classifiers = [
 dependencies = [
   "sqlalchemy>=1.4.0",
   "sqlean-py>=0.21.5.3",
+  "greenlet>=3.0.0a1",
 ]
 
 [project.entry-points."sqlalchemy.dialects"]
