@@ -37,7 +37,7 @@ classifiers = [
 ]
 dependencies = [
   "sqlalchemy>=1.4.0",
-  "sqlean-py>=0.21.5.3",
+  "sqlean-py>=0.21.5.1",
   "greenlet>=3.0.0a1",
 ]
 
