@@ -25,6 +25,7 @@ classifiers = [
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: Implementation :: CPython",
   "Programming Language :: SQL",
   "Topic :: Database",
@@ -37,6 +38,7 @@ classifiers = [
 dependencies = [
   "sqlalchemy>=1.4.0",
   "sqlean-py>=0.21.5.1",
+  "greenlet>=3.0.0a1",
 ]
 
 [project.entry-points."sqlalchemy.dialects"]
@@ -70,7 +72,7 @@ cov-report = ["- coverage combine", "coverage report"]
 cov = ["test-cov", "cov-report"]
 
 [[tool.hatch.envs.all.matrix]]
-python = ["3.8", "3.9", "3.10", "3.11"]
+python = ["3.8", "3.9", "3.10", "3.11", "3.12"]
 
 [tool.hatch.envs.typing]
 dependencies = ["mypy>=1.0.0", "pytest"]
