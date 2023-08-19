@@ -63,7 +63,7 @@ def test_no_extensions(engine: Engine) -> None:
                 func.hex(func.md5(func.concat("hello", column("value")))).label("crypto"),
                 func.median(column("value")).label("stats"),
             ).select_from(
-                func.generate_series(1, 99).alias("generate_series_1"),   # type: ignore[no-untyped-call]  # noqa: E501
+                func.generate_series(1, 99).alias("generate_series_1"),  # type: ignore[no-untyped-call]  # noqa: E501
             ),
             ("203AD5FFA1D7C650AD681FDFF3965CD2", 50),
         ),
