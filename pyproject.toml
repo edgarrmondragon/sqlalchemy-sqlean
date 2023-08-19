@@ -68,7 +68,7 @@ dependencies = [
 test = "pytest {args:tests}"
 test-cov = "coverage run -m pytest {args:tests}"
 cov-xml = "coverage xml"
-cov-report = ["- coverage combine", "coverage report"]
+cov-report = ["- coverage combine", "coverage report --show-missing"]
 cov = ["test-cov", "cov-report"]
 
 [[tool.hatch.envs.all.matrix]]
@@ -107,6 +107,10 @@ module = [
 addopts = ["-vv"]
 
 [tool.ruff]
+ignore = [
+  "ANN101",  # missing-type-self
+  "ANN102",  # missing-type-cls
+]
 line-length = 100
 select = [
   "ALL",

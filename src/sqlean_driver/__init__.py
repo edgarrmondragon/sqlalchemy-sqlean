@@ -23,7 +23,7 @@ class SQLeanDialect(SQLiteDialect_pysqlite):
     supports_statement_cache = True
 
     @classmethod
-    def dbapi(cls: type[SQLeanDialect]) -> ModuleType:  # type: ignore[override]
+    def dbapi(cls) -> ModuleType:  # type: ignore[override]
         """Return the DBAPI module.
 
         NOTE: This is a legacy method that will stop being used by SQLAlchemy at some point.
@@ -31,13 +31,13 @@ class SQLeanDialect(SQLiteDialect_pysqlite):
         return cls.import_dbapi()
 
     @classmethod
-    def import_dbapi(cls: type[SQLeanDialect]) -> ModuleType:
+    def import_dbapi(cls) -> ModuleType:
         """Return the DBAPI module."""
         import sqlean
 
         return sqlean  # type: ignore[no-any-return]
 
-    def on_connect_url(self: SQLeanDialect, url: URL) -> t.Callable[[t.Any], t.Any] | None:
+    def on_connect_url(self, url: URL) -> t.Callable[[t.Any], t.Any] | None:
         """Return a callable that will be executed on connect."""
         query = url.query.get("extensions", ())
         extensions = query if isinstance(query, tuple) else query.split(",")
