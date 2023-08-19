@@ -24,32 +24,32 @@ def engine() -> Engine:
     return create_engine(url)
 
 
-def test_driver_name(engine: Engine):
+def test_driver_name(engine: Engine) -> None:
     """Test that the URL works."""
     assert engine.dialect.driver == "sqlean"
 
 
-def test_driver_dbapi(engine: Engine):
+def test_driver_dbapi(engine: Engine) -> None:
     """Test that the DBAPI is sqlean."""
     assert isinstance(engine.dialect.dbapi, ModuleType)
     assert engine.dialect.dbapi.__name__ == "sqlean"
 
 
-def test_sql(engine: Engine):
+def test_sql(engine: Engine) -> None:
     """Test that the SQL works."""
     with engine.connect() as conn:
         result = conn.execute(select(1))
     assert result.fetchone() == (1,)
 
 
-def test_no_extensions(engine: Engine):
+def test_no_extensions(engine: Engine) -> None:
     """Test that the extensions are not loaded."""
     with pytest.raises(OperationalError), engine.connect() as conn:
         conn.execute(
             select(
                 func.median(column("value")),
             ).select_from(
-                func.generate_series(1, 99).alias("generate_series_1"),
+                func.generate_series(1, 99).alias("generate_series_1"),  # type: ignore[no-untyped-call]  # noqa: E501
             ),
         )
 
@@ -63,7 +63,7 @@ def test_no_extensions(engine: Engine):
                 func.hex(func.md5(func.concat("hello", column("value")))).label("crypto"),
                 func.median(column("value")).label("stats"),
             ).select_from(
-                func.generate_series(1, 99).alias("generate_series_1"),
+                func.generate_series(1, 99).alias("generate_series_1"),  # type: ignore[no-untyped-call]  # noqa: E501
             ),
             ("203AD5FFA1D7C650AD681FDFF3965CD2", 50),
         ),
@@ -72,7 +72,7 @@ def test_no_extensions(engine: Engine):
             select(
                 func.median(column("value")),
             ).select_from(
-                func.generate_series(1, 99).alias("generate_series_1"),
+                func.generate_series(1, 99).alias("generate_series_1"),  # type: ignore[no-untyped-call]  # noqa: E501
             ),
             (50,),
         ),
@@ -113,7 +113,11 @@ def test_no_extensions(engine: Engine):
     ],
     ids=["all", "stats", "crypto", "ipaddr", "math+crypto", "ipaddr+crypto"],
 )
-def test_extensions(extensions: str, query: Select, expected: tuple):
+def test_extensions(
+    extensions: str,
+    query: Select[tuple[t.Any, ...]],
+    expected: tuple[t.Any, ...],
+) -> None:
     """Test that the extensions work."""
     url = f"sqlite+sqlean:///:memory:?extensions={extensions}"
     engine = create_engine(url)
@@ -126,7 +130,7 @@ def test_extensions(extensions: str, query: Select, expected: tuple):
     sys.platform == "win32",
     reason="'ipaddr' extension not available on Windows",
 )
-def test_e2e_sql():
+def test_e2e_sql() -> None:
     """Test that the SQL works."""
     url = "sqlite+sqlean:///:memory:?extensions=all"
     engine = create_engine(url)
