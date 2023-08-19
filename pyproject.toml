@@ -77,7 +77,7 @@ python = ["3.8", "3.9", "3.10", "3.11", "3.12"]
 [tool.hatch.envs.typing]
 dependencies = ["mypy>=1.0.0", "pytest"]
 [tool.hatch.envs.typing.scripts]
-check = "mypy --install-types --non-interactive {args:src/sqlean_driver tests}"
+check = "mypy --strict --install-types --non-interactive {args:src/sqlean_driver tests}"
 
 [tool.hatch.envs.lint]
 detached = true

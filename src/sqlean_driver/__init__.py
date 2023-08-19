@@ -35,7 +35,7 @@ class SQLeanDialect(SQLiteDialect_pysqlite):
         """Return the DBAPI module."""
         import sqlean
 
-        return sqlean
+        return sqlean  # type: ignore[no-any-return]
 
     def on_connect_url(self: SQLeanDialect, url: URL) -> t.Callable[[t.Any], t.Any] | None:
         """Return a callable that will be executed on connect."""
