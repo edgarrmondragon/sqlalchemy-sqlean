@@ -13,7 +13,12 @@ A SQLAlchemy driver for [`sqlean.py`](https://github.com/nalgeon/sqlean.py).
 - [Usage](#usage)
   - [Extensions](#extensions)
   - [Alternatives](#alternatives)
+- [Development](#development)
+  - [Run tests and coverage](#run-tests-and-coverage)
+  - [Run linter](#run-linter)
+  - [Run type checker](#run-type-checker)
 - [License](#license)
+- [Acknowledgements](#acknowledgements)
 
 ## Installation
 
@@ -78,3 +83,8 @@ hatch run typing:check
 ## License
 
 `sqlean-driver` is distributed under the terms of the [MIT](https://spdx.org/licenses/MIT.html) license.
+
+## Acknowledgements
+
+* [Anton Zhiyanov](https://github.com/nalgeon) for creating [`sqlean`](https://github.com/nalgeon/sqlean) and [`sqlean.py`](https://github.com/nalgeon/sqlean.py).
+* [Orhun Parmaksız](https://github.com/orhun) for creating [`git-cliff`](https://github.com/orhun/git-cliff), which this project uses to keep a changelog.
