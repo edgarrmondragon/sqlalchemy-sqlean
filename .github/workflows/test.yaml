@@ -18,6 +18,9 @@ on:
             - .github/workflows/test.yml
             - .github/workflows/constraints.txt
     workflow_dispatch: {}
+    schedule:
+      # Run every 27 hours to avoid running at the same time every day
+      - cron: "40 12 * * 1-5"
 
 concurrency:
     cancel-in-progress: true
