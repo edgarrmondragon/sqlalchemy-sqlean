@@ -107,8 +107,6 @@ jobs:
         name: Coverage
         runs-on: ubuntu-latest
         needs: test
-        env:
-            HATCH_ENV: "py3.11-sqlalchemy_2"
         steps:
             - uses: actions/checkout@v3
             - uses: actions/setup-python@v4
@@ -124,10 +122,10 @@ jobs:
                 name: coverage-data
             - name: Combine coverage data
               run: |
-                hatch run cov-report
+                hatch run coverage:report
             - name: Create coverage XML report
               run: |
-                hatch run cov-xml
+                hatch run coverage:xml
             - uses: codecov/codecov-action@v3
               with:
                 fail_ci_if_error: true
