@@ -65,8 +65,9 @@ dependencies = [
   "coverage[toml]>=6.5",
   "pytest",
   "pytest-github-actions-annotate-failures",
-  "sqlalchemy=={env:SQLALCHEMY_VERSION:2.*}",
+  "sqlalchemy=={matrix:sqlalchemy}.*",
 ]
+matrix-name-format = "{variable}_{value}"
 [tool.hatch.envs.default.scripts]
 test = "pytest {args:tests}"
 test-cov = "coverage run -m pytest {args:tests}"
@@ -74,7 +75,8 @@ cov-xml = "coverage xml"
 cov-report = ["- coverage combine", "coverage report --show-missing"]
 cov = ["test-cov", "cov-report"]
 
-[[tool.hatch.envs.all.matrix]]
+[[tool.hatch.envs.default.matrix]]
+sqlalchemy = ["1", "2"]
 python = ["3.8", "3.9", "3.10", "3.11", "3.12"]
 
 [tool.hatch.envs.typing]
