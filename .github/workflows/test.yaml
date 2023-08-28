@@ -72,14 +72,14 @@ jobs:
             matrix:
                 os: ["ubuntu-latest"]
                 python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
-                sqlalchemy-version: ["1.*", "2.*"]
+                sqlalchemy-version: ["1", "2"]
                 include:
                     - python-version: "3.11"
-                      sqlalchemy-version: "2.*"
+                      sqlalchemy-version: "2"
                       os: "windows-latest"
 
                     - python-version: "3.11"
-                      sqlalchemy-version: "2.*"
+                      sqlalchemy-version: "2"
                       os: "macos-latest"
         steps:
             - uses: actions/checkout@v3
@@ -95,7 +95,7 @@ jobs:
                 pipx install hatch
             - name: Run tests
               env:
-                SQLALCHEMY_VERSION: ${{ matrix.sqlalchemy-version }}
+                HATCH_ENV: "py${{ matrix.python-version }}-sqlalchemy_${{ matrix.sqlalchemy-version }}"
               run: |
                 hatch run test-cov
             - uses: actions/upload-artifact@v3
@@ -107,6 +107,8 @@ jobs:
         name: Coverage
         runs-on: ubuntu-latest
         needs: test
+        env:
+            HATCH_ENV: "py3.11-sqlalchemy_2"
         steps:
             - uses: actions/checkout@v3
             - uses: actions/setup-python@v4
