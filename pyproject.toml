@@ -1,17 +1,20 @@
 [build-system]
-requires = ["hatchling", "hatch-vcs"]
 build-backend = "hatchling.build"
+requires = [
+  "hatch-vcs",
+  "hatchling",
+]
 
 [project]
 name = "sqlean-driver"
-dynamic = ["version"]
-description = 'SQLAlchemy dialect for the sqlean.py SQLite wrapper'
+description = "SQLAlchemy dialect for the sqlean.py SQLite wrapper"
 readme = "README.md"
-requires-python = ">=3.8"
+keywords = [
+]
 license = "MIT"
-keywords = []
-authors = [{ name = "Edgar Ramírez Mondragón", email = "edgarrm358@gmail.com" }]
 maintainers = [{ name = "Edgar Ramírez Mondragón", email = "edgarrm358@gmail.com" }]
+authors = [{ name = "Edgar Ramírez Mondragón", email = "edgarrm358@gmail.com" }]
+requires-python = ">=3.8"
 classifiers = [
   "Development Status :: 4 - Beta",
   "Intended Audience :: Developers",
@@ -20,7 +23,6 @@ classifiers = [
   "Intended Audience :: System Administrators",
   "License :: OSI Approved :: MIT License",
   "Operating System :: OS Independent",
-  "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3 :: Only",
   "Programming Language :: Python :: 3.8",
   "Programming Language :: Python :: 3.9",
@@ -36,25 +38,25 @@ classifiers = [
   "Topic :: Software Development :: Libraries :: Python Modules",
   "Typing :: Typed",
 ]
-dependencies = [
-  "sqlalchemy>=1.4.0",
-  "sqlean-py>=0.21.5.1",
-  "greenlet>=3.0.0a1",
+dynamic = [
+  "version",
 ]
-
-[project.entry-points."sqlalchemy.dialects"]
-"sqlite.sqlean" = "sqlean_driver:SQLeanDialect"
-
+dependencies = [
+  "greenlet>=3.0.0a1",
+  "sqlalchemy>=1.4",
+  "sqlean-py>=0.21.5.1",
+]
 [project.optional-dependencies]
 dev = [
   "pytest",
 ]
-
 [project.urls]
+Changelog = "https://github.com/edgarrmondragon/sqlean-driver/blob/main/CHANGELOG.md"
 Documentation = "https://github.com/edgarrmondragon/sqlean-driver#readme"
 Issues = "https://github.com/edgarrmondragon/sqlean-driver/issues"
 Source = "https://github.com/edgarrmondragon/sqlean-driver"
-Changelog = "https://github.com/edgarrmondragon/sqlean-driver/blob/main/CHANGELOG.md"
+[project.entry-points."sqlalchemy.dialects"]
+"sqlite.sqlean" = "sqlean_driver:SQLeanDialect"
 
 [tool.hatch.version]
 source = "vcs"
@@ -94,20 +96,6 @@ target-version = ["py38"]
 line-length = 100
 skip-string-normalization = true
 
-[tool.mypy]
-warn_unreachable = true
-warn_unused_configs = true
-warn_unused_ignores = true
-
-[[tool.mypy.overrides]]
-ignore_missing_imports = true
-module = [
-  "sqlean.*",
-]
-
-[tool.pytest.ini_options]
-addopts = ["-vv"]
-
 [tool.ruff]
 ignore = [
   "ANN101",  # missing-type-self
@@ -133,6 +121,9 @@ ban-relative-imports = "all"
 [tool.ruff.pydocstyle]
 convention = "google"
 
+[tool.pytest.ini_options]
+addopts = ["-vv"]
+
 [tool.coverage.run]
 source_pkgs = ["sqlean_driver", "tests"]
 branch = true
@@ -147,4 +138,15 @@ tests = ["tests", "*/sqlean-driver/tests"]
 exclude_lines = [
   "no cov", "if __name__ == .__main__.:",
   "if t.TYPE_CHECKING:",
+]
+
+[tool.mypy]
+warn_unreachable = true
+warn_unused_configs = true
+warn_unused_ignores = true
+
+[[tool.mypy.overrides]]
+ignore_missing_imports = true
+module = [
+  "sqlean.*",
 ]
