@@ -160,14 +160,15 @@ def test_e2e_sql() -> None:
                 func.ipfamily("192.168.1.1").label("family"),
             ),
         )
-        conn.execute(insert_sql)
+        with conn.begin():
+            conn.execute(insert_sql)
 
-        select_sql = select(
-            table.c.id,
-            table.c.ip,
-            table.c.network,
-            table.c.family,
-        )
-        result = conn.execute(select_sql)
+            select_sql = select(
+                table.c.id,
+                table.c.ip,
+                table.c.network,
+                table.c.family,
+            )
+            result = conn.execute(select_sql)
 
         assert result.fetchone() == (1, "192.168.1.1", "192.168.1.1/32", 4)

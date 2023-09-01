@@ -68,6 +68,8 @@ dependencies = [
   "sqlalchemy=={matrix:sqlalchemy}.*",
 ]
 matrix-name-format = "{variable}_{value}"
+[tool.hatch.envs.default.env-vars]
+SQLALCHEMY_WARN_20 = "1"
 [tool.hatch.envs.default.scripts]
 test = "pytest {args:tests}"
 test-cov = "coverage run -m pytest {args:tests}"
@@ -129,7 +131,7 @@ ban-relative-imports = "all"
 convention = "google"
 
 [tool.pytest.ini_options]
-addopts = ["-vv"]
+addopts = ["-vv", "-W error"]
 
 [tool.coverage.run]
 source_pkgs = ["sqlean_driver", "tests"]
