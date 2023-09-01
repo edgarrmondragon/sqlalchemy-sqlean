@@ -129,7 +129,7 @@ ban-relative-imports = "all"
 convention = "google"
 
 [tool.pytest.ini_options]
-addopts = ["-vv"]
+addopts = ["-vv", "-W error"]
 
 [tool.coverage.run]
 source_pkgs = ["sqlean_driver", "tests"]
