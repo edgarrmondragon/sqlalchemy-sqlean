@@ -67,7 +67,7 @@ This project uses [Hatch](https://hatch.pypa.io/) to manage the development envi
 Run tests and compute coverage for all supported Python and SQLAlchemy versions:
 
 ```shell
-hatch run test-cov
+hatch run test:cov
 ```
 
 Combine coverage output into a single report:
