@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import ipaddress
+import sys
 import typing as t
 import uuid
 
@@ -24,6 +25,10 @@ table = Table(
 )
 
 
+@pytest.mark.xfail(
+    sys.platform == "win32",
+    reason="'ipaddr' extension not available on Windows",
+)
 @pytest.mark.parametrize(
     ("data", "query", "expected"),
     [
