@@ -44,11 +44,11 @@ dependencies = [
   "greenlet>=3.0.0a1",
   "sqlalchemy>=1.4",
   "sqlean-py>=0.21.5.1",
-  'typing-extensions; python_version < "3.10"',
 ]
 [project.optional-dependencies]
 dev = [
   "pytest",
+  'typing-extensions; python_version < "3.10"',
 ]
 [project.urls]
 Changelog = "https://github.com/edgarrmondragon/sqlean-driver/blob/main/CHANGELOG.md"
@@ -64,10 +64,10 @@ source = "vcs"
 [tool.hatch.envs.test]
 dependencies = [
   "coverage[toml]>=6.5",
-  "pytest",
   "pytest-github-actions-annotate-failures",
   "sqlalchemy=={matrix:sqlalchemy:2}.*",
 ]
+features = ["dev"]
 matrix-name-format = "{variable}_{value}"
 [tool.hatch.envs.test.env-vars]
 SQLALCHEMY_WARN_20 = "1"
@@ -89,7 +89,8 @@ xml = "coverage xml"
 report = ["coverage combine", "coverage report --show-missing"]
 
 [tool.hatch.envs.typing]
-dependencies = ["mypy>=1.0.0", "pytest"]
+dependencies = ["mypy>=1.0.0"]
+features = ["dev"]
 [tool.hatch.envs.typing.scripts]
 check = "mypy --strict --install-types --non-interactive {args:src/sqlean_driver tests}"
 
@@ -209,6 +210,7 @@ select = [
 target-version = "py38"
 unfixable = [
   "ERA",
+  "F401",
 ]
 
 [tool.ruff.isort]

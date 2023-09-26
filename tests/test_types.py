@@ -2,25 +2,34 @@
 
 from __future__ import annotations
 
-import ipaddress
 import sys
 import typing as t
 import uuid
+from ipaddress import IPv4Interface, IPv4Network, IPv6Interface
 
 import pytest
-from sqlalchemy import Column, Integer, MetaData, Table, create_engine, func, select
+from sqlalchemy import (
+    Column,
+    Integer,
+    MetaData,
+    Table,
+    create_engine,
+    func,
+    select,
+)
 
-from sqlean_driver.custom_types import INET, UUID
+from sqlean_driver.custom_types import CIDR, INET, UUID
 
 if t.TYPE_CHECKING:
     from sqlalchemy import Select
 
 metadata = MetaData()
 table = Table(
-    "table",
+    "test_table",
     metadata,
     Column("id", Integer, primary_key=True),
     Column("ip", INET),
+    Column("cidr", CIDR),
     Column("uuid_col", UUID),
 )
 
@@ -39,34 +48,46 @@ table = Table(
             id="nullable",
         ),
         pytest.param(
-            [{"ip": ipaddress.IPv4Network("192.168.1.1")}],
+            [{"cidr": None}],
+            select(table.c.cidr),
+            (None,),
+            id="nullable_cidr",
+        ),
+        pytest.param(
+            [{"cidr": IPv4Network("192.168.16.3/32")}],
+            select(table.c.cidr),
+            (IPv4Network("192.168.16.3/32"),),
+            id="cidr",
+        ),
+        pytest.param(
+            [{"ip": IPv4Network("192.168.1.1")}],
             select(func.ipfamily(table.c.ip), table.c.ip.ipfamily()),
             (4, 4),
             id="ipfamily",
         ),
         pytest.param(
-            [{"ip": ipaddress.IPv6Interface("2001:db8::123/64")}],
+            [{"ip": IPv6Interface("2001:db8::123/64")}],
             select(func.iphost(table.c.ip), table.c.ip.iphost()),
             ("2001:db8::123", "2001:db8::123"),
             id="iphost",
         ),
         pytest.param(
-            [{"ip": ipaddress.IPv4Interface("192.168.16.12/24")}],
+            [{"ip": IPv4Interface("192.168.16.12/24")}],
             select(func.ipmasklen(table.c.ip), table.c.ip.ipmasklen()),
             (24, 24),
             id="ipmasklen",
         ),
         pytest.param(
-            [{"ip": ipaddress.IPv4Interface("192.168.16.12/24")}],
+            [{"ip": IPv4Interface("192.168.16.12/24")}],
             select(func.ipnetwork(table.c.ip), table.c.ip.ipnetwork()),
             (
-                ipaddress.IPv4Network("192.168.16.0/24"),
-                ipaddress.IPv4Network("192.168.16.0/24"),
+                IPv4Network("192.168.16.0/24"),
+                IPv4Network("192.168.16.0/24"),
             ),
             id="ipnetwork",
         ),
         pytest.param(
-            [{"ip": ipaddress.IPv4Interface("192.168.16.0/24")}],
+            [{"ip": IPv4Interface("192.168.16.0/24")}],
             select(
                 func.ipcontains(table.c.ip, "192.168.16.3"),
                 table.c.ip.ipcontains("192.168.16.3"),
@@ -75,7 +96,7 @@ table = Table(
             id="ipcontains_lhs",
         ),
         pytest.param(
-            [{"ip": ipaddress.IPv4Interface("192.168.16.3")}],
+            [{"ip": IPv4Interface("192.168.16.3")}],
             select(
                 func.ipcontains("192.168.16.0/24", table.c.ip),
             ),
