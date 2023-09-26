@@ -71,9 +71,13 @@ class INET(sqltypes.TypeEngine[IPAddress]):
         """Return a result processor."""
         return none_or_ip_interface
 
+    # TODO(edgarrmondragon): Add missing type parameters:
+    # > sqltypes.Indexable.Comparator[IPAddress]
+    # > sqltypes.Concatenable.Comparator[IPAddress]
+    # https://github.com/edgarrmondragon/sqlean-driver/issues/37
     class Comparator(
-        sqltypes.Indexable.Comparator[IPAddress],
-        sqltypes.Concatenable.Comparator[IPAddress],
+        sqltypes.Indexable.Comparator,  # type: ignore[type-arg]
+        sqltypes.Concatenable.Comparator,  # type: ignore[type-arg]
     ):
         """Comparator for the INET type."""
 

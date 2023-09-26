@@ -84,7 +84,7 @@ class SQLeanDialect(SQLiteDialect_pysqlite):
 
     driver = "sqlean"
     supports_statement_cache = True
-    type_compiler_cls = SQLeanTypeCompiler
+    type_compiler = SQLeanTypeCompiler
 
     @classmethod
     def dbapi(cls) -> ModuleType:  # type: ignore[override]

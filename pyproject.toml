@@ -110,6 +110,7 @@ skip-string-normalization = true
 ignore = [
   "ANN101",  # missing-type-self
   "ANN102",  # missing-type-cls
+  "FIX002",  # line-contains-todo
 ]
 line-length = 100
 select = [

@@ -87,7 +87,7 @@ def test_ipaddr_types(
     """Test that the types work."""
     engine = create_engine("sqlite+sqlean:///:memory:?extensions=ipaddr")
     metadata.create_all(engine)
-    with engine.connect() as conn:
+    with engine.connect() as conn, conn.begin():
         conn.execute(table.insert(), data)
         result = conn.execute(query)
         assert result.fetchone() == expected
@@ -112,7 +112,7 @@ def test_uuid_types(
     """Test that the types work."""
     engine = create_engine("sqlite+sqlean:///:memory:?extensions=uuid")
     metadata.create_all(engine)
-    with engine.connect() as conn:
+    with engine.connect() as conn, conn.begin():
         conn.execute(table.insert(), data)
         result = conn.execute(query)
         assert result.fetchone() == expected
