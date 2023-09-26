@@ -27,7 +27,11 @@ __version__ = version(__package__)
 class SQLeanTypeCompiler(SQLiteTypeCompiler):
     """A type compiler for SQLite that uses sqlean.py as the DBAPI."""
 
-    def visit_INET(self, type_: TypeEngine[IPAddress], **kwa: t.Any) -> str:  # noqa: ARG002, PLR6301, E501
+    def visit_INET(
+        self,  # noqa: PLR6301
+        type_: TypeEngine[IPAddress],  # noqa: ARG002
+        **kw: t.Any,  # noqa: ARG002
+    ) -> str:
         """Visit an INET node."""
         return "INET"
 
