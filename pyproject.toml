@@ -120,6 +120,7 @@ ignore = [
   "ANN102",  # missing-type-cls
 ]
 line-length = 100
+preview = true
 select = [
   "F",       # Pyflakes
   "E",       # pycodestyle (error)
