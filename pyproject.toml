@@ -42,7 +42,6 @@ dynamic = [
   "version",
 ]
 dependencies = [
-  "greenlet>=3.0.0a1",
   "sqlalchemy>=1.4",
   "sqlean-py>=0.21.5.1",
 ]
