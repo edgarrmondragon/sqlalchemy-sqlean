@@ -245,7 +245,10 @@ branch = true
 parallel = true
 
 [tool.coverage.paths]
-sqlean_driver = ["src/sqlean_driver", "*/sqlean-driver/src/sqlean_driver"]
+sqlean_driver = [
+  "*/sqlean_driver",
+  "*\\sqlean_driver",
+]
 tests = ["tests", "*/sqlean-driver/tests"]
 
 [tool.coverage.report]
