@@ -92,6 +92,7 @@ jobs:
                   cache: pip
                   python-version: ${{ matrix.python-version }}
                   allow-prereleases: true
+                  architecture: x64
             - name: Install dependencies
               env:
                 PIP_CONSTRAINT: .github/workflows/constraints.txt
