@@ -102,7 +102,7 @@ jobs:
               env:
                 HATCH_ENV: "test.py${{ matrix.python-version }}-sqlalchemy_${{ matrix.sqlalchemy-version }}"
               run: |
-                hatch run cov
+                hatch -vvv run cov
             - uses: actions/upload-artifact@v3
               with:
                 name: coverage-data
