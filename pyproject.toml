@@ -42,7 +42,6 @@ dynamic = [
   "version",
 ]
 dependencies = [
-  "greenlet>=3.0.0a1",
   "sqlalchemy>=1.4",
   "sqlean-py>=0.21.5.1",
 ]
@@ -71,6 +70,15 @@ dependencies = [
 matrix-name-format = "{variable}_{value}"
 [tool.hatch.envs.test.env-vars]
 SQLALCHEMY_WARN_20 = "1"
+[tool.hatch.envs.test.overrides]
+env.GITHUB_ACTIONS.dev-mode = { value = false, if = ["true"] }
+
+[[tool.hatch.envs.test.overrides.matrix.sqlalchemy.env-vars]]
+key = "PIP_ONLY_BINARY"
+value = ":all:"
+if = ["2"]
+platform = ["macos"]
+
 [tool.hatch.envs.test.scripts]
 run = "pytest {args:tests}"
 cov = "coverage run -m pytest {args:tests}"
@@ -86,7 +94,7 @@ dependencies = [
 [tool.hatch.envs.coverage.scripts]
 json = "coverage json"
 xml = "coverage xml"
-report = ["coverage combine", "coverage report --show-missing"]
+report = ["coverage combine --debug=pathmap", "coverage report --show-missing"]
 
 [tool.hatch.envs.typing]
 dependencies = ["mypy>=1.0.0", "pytest"]
@@ -112,6 +120,7 @@ ignore = [
   "ANN102",  # missing-type-cls
 ]
 line-length = 100
+preview = true
 select = [
   "F",       # Pyflakes
   "E",       # pycodestyle (error)
@@ -230,14 +239,17 @@ convention = "google"
 [tool.pytest.ini_options]
 addopts = ["-vv", "-W error"]
 
-[tool.coverage.run]
-source_pkgs = ["sqlean_driver", "tests"]
-branch = true
-parallel = true
-
 [tool.coverage.paths]
-sqlean_driver = ["src/sqlean_driver", "*/sqlean-driver/src/sqlean_driver"]
-tests = ["tests", "*/sqlean-driver/tests"]
+package = [
+  "src/sqlean_driver/",
+  "*/site-packages/sqlean_driver/",
+]
+
+[tool.coverage.run]
+branch = true
+source = ["sqlean_driver", "tests"]
+parallel = true
+relative_files = true
 
 [tool.coverage.report]
 exclude_lines = [
