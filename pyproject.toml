@@ -94,7 +94,7 @@ dependencies = [
 [tool.hatch.envs.coverage.scripts]
 json = "coverage json"
 xml = "coverage xml"
-report = ["coverage combine", "coverage report --show-missing"]
+report = ["coverage combine --debug=pathmap", "coverage report --show-missing"]
 
 [tool.hatch.envs.typing]
 dependencies = ["mypy>=1.0.0", "pytest"]
@@ -240,16 +240,10 @@ convention = "google"
 addopts = ["-vv", "-W error"]
 
 [tool.coverage.run]
-source_pkgs = ["sqlean_driver", "tests"]
 branch = true
+source_pkgs = ["sqlean_driver", "tests"]
 parallel = true
-
-[tool.coverage.paths]
-sqlean_driver = [
-  "*/sqlean_driver",
-  "*\\sqlean_driver",
-]
-tests = ["tests", "*/sqlean-driver/tests"]
+relative_files = true
 
 [tool.coverage.report]
 exclude_lines = [
