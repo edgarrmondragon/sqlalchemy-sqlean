@@ -241,7 +241,7 @@ addopts = ["-vv", "-W error"]
 
 [tool.coverage.run]
 branch = true
-source_pkgs = ["sqlean_driver", "tests"]
+source = ["sqlean_driver", "tests"]
 parallel = true
 relative_files = true
 
