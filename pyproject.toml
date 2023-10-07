@@ -239,6 +239,12 @@ convention = "google"
 [tool.pytest.ini_options]
 addopts = ["-vv", "-W error"]
 
+[tool.coverage.paths]
+package = [
+  "src/sqlean_driver/",
+  "site_packages/sqlean_driver/",
+]
+
 [tool.coverage.run]
 branch = true
 source = ["sqlean_driver", "tests"]
