@@ -75,7 +75,7 @@ jobs:
             fail-fast: false
             matrix:
                 os: ["ubuntu-latest"]
-                python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
+                python-version: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
                 sqlalchemy-version: ["1", "2"]
                 include:
                     - python-version: "3.12"
@@ -85,14 +85,27 @@ jobs:
                     - python-version: "3.12"
                       sqlalchemy-version: "2"
                       os: "macos-latest"
+
+                    - python-version: "3.13"
+                      sqlalchemy-version: "2"
+                      os: "ubuntu-latest"
+                      nightly: true
+
         steps:
             - uses: actions/checkout@v4
             - uses: actions/setup-python@v4
+              if: "${{ !matrix.nightly }}"
               with:
                   cache: pip
                   python-version: ${{ matrix.python-version }}
                   allow-prereleases: true
                   architecture: x64
+            - name: Setup Python ${{ matrix.python-version }} (nightly)
+              if: "${{ matrix.nightly }}"
+              uses: deadsnakes/action@v3.0.1
+              with:
+                python-version: "${{ matrix.python-version }}-dev"
+
             - name: Install dependencies
               env:
                 PIP_CONSTRAINT: .github/workflows/constraints.txt
