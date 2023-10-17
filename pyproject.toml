@@ -106,7 +106,7 @@ detached = true
 dependencies = ["black>=23.1.0", "mypy>=1.0.0", "ruff>=0.0.243"]
 [tool.hatch.envs.lint.scripts]
 style = ["ruff check {args:.}", "black --check --diff {args:.}"]
-style-gh = ["ruff check {args:.} --format github", "black --check --diff {args:.}"]
+style-gh = ["ruff check {args:.} --output-format github", "black --check --diff {args:.}"]
 fmt = ["black {args:.}", "ruff --fix {args:.}", "style"]
 
 [tool.black]
