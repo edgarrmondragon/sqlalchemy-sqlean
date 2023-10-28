@@ -46,8 +46,16 @@ dependencies = [
   "sqlean-py>=0.21.5.1",
 ]
 [project.optional-dependencies]
-dev = [
+coverage = [
+  "coverage[toml]>=6.5",
+]
+testing = [
   "pytest",
+  "pytest-github-actions-annotate-failures",
+  "sqlean-driver[coverage]",
+]
+typing = [
+  "mypy>=1",
 ]
 [project.urls]
 Changelog = "https://github.com/edgarrmondragon/sqlean-driver/blob/main/CHANGELOG.md"
@@ -62,11 +70,9 @@ source = "vcs"
 
 [tool.hatch.envs.test]
 dependencies = [
-  "coverage[toml]>=6.5",
-  "pytest",
-  "pytest-github-actions-annotate-failures",
   "sqlalchemy=={matrix:sqlalchemy:2}.*",
 ]
+features = ["testing"]
 matrix-name-format = "{variable}_{value}"
 [tool.hatch.envs.test.env-vars]
 SQLALCHEMY_WARN_20 = "1"
@@ -88,26 +94,24 @@ sqlalchemy = ["1", "2"]
 python = ["3.8", "3.9", "3.10", "3.11", "3.12"]
 
 [tool.hatch.envs.coverage]
-dependencies = [
-  "coverage[toml]>=6.5",
-]
+features = ["coverage"]
 [tool.hatch.envs.coverage.scripts]
 json = "coverage json"
 xml = "coverage xml"
 report = ["coverage combine --debug=pathmap", "coverage report --show-missing"]
 
 [tool.hatch.envs.typing]
-dependencies = ["mypy>=1.0.0", "pytest"]
+features = ["testing", "typing"]
 [tool.hatch.envs.typing.scripts]
 check = "mypy --strict --install-types --non-interactive {args:src/sqlean_driver tests}"
 
 [tool.hatch.envs.lint]
+dependencies = ["ruff>=0.1"]
 detached = true
-dependencies = ["black>=23.1.0", "mypy>=1.0.0", "ruff>=0.0.243"]
 [tool.hatch.envs.lint.scripts]
-style = ["ruff check {args:.}", "black --check --diff {args:.}"]
-style-gh = ["ruff check {args:.} --output-format github", "black --check --diff {args:.}"]
-fmt = ["black {args:.}", "ruff --fix {args:.}", "style"]
+style = ["ruff check {args:.}", "ruff format --check --diff {args:.}"]
+style-gh = ["ruff check {args:.} --output-format github", "ruff format --check --diff {args:.}"]
+fmt = ["ruff --fix {args:.}", "ruff format {args:.}"]
 
 [tool.black]
 target-version = ["py38"]
@@ -115,11 +119,16 @@ line-length = 100
 skip-string-normalization = true
 
 [tool.ruff]
+line-length = 100
+target-version = "py38"
+
+[tool.ruff.lint]
 ignore = [
   "ANN101",  # missing-type-self
   "ANN102",  # missing-type-cls
+  "COM812",  # missing-trailing-comma
+  "ISC001",  # single-line-implicit-string-concatenation
 ]
-line-length = 100
 preview = true
 select = [
   "F",       # Pyflakes
@@ -214,26 +223,25 @@ select = [
   "FURB132", # check-and-remove-from-set
   "RUF",     # Ruff-specific rules
 ]
-target-version = "py38"
 
-[tool.ruff.isort]
+[tool.ruff.lint.isort]
 known-first-party = ["sqlean_driver"]
 required-imports = ["from __future__ import annotations"]
 
-[tool.ruff.flake8-import-conventions]
+[tool.ruff.lint.flake8-import-conventions]
 banned-from = ["typing"]
 
-[tool.ruff.flake8-import-conventions.extend-aliases]
+[tool.ruff.lint.flake8-import-conventions.extend-aliases]
 typing = "t"
 
-[tool.ruff.flake8-tidy-imports]
+[tool.ruff.lint.flake8-tidy-imports]
 ban-relative-imports = "all"
 
-[tool.ruff.per-file-ignores]
+[tool.ruff.lint.per-file-ignores]
 # Tests can use magic values, assertions, and relative imports
 "tests/**/*" = ["PLR2004", "S101", "TID252", "ANN201"]
 
-[tool.ruff.pydocstyle]
+[tool.ruff.lint.pydocstyle]
 convention = "google"
 
 [tool.pytest.ini_options]
