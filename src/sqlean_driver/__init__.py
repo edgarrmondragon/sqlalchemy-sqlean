@@ -33,7 +33,7 @@ class SQLeanDialect(SQLiteDialect_pysqlite):
     @classmethod
     def import_dbapi(cls) -> ModuleType:
         """Return the DBAPI module."""
-        import sqlean
+        import sqlean  # noqa: PLC0415
 
         return sqlean  # type: ignore[no-any-return]
 
