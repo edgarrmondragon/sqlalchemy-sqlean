@@ -79,19 +79,13 @@ SQLALCHEMY_WARN_20 = "1"
 [tool.hatch.envs.test.overrides]
 env.GITHUB_ACTIONS.dev-mode = { value = false, if = ["true"] }
 
-[[tool.hatch.envs.test.overrides.matrix.sqlalchemy.env-vars]]
-key = "PIP_ONLY_BINARY"
-value = ":all:"
-if = ["2"]
-platform = ["macos"]
-
 [tool.hatch.envs.test.scripts]
 run = "pytest {args:tests}"
 cov = "coverage run -m pytest {args:tests}"
 
 [[tool.hatch.envs.test.matrix]]
 sqlalchemy = ["1", "2"]
-python = ["3.8", "3.9", "3.10", "3.11", "3.12"]
+python = ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
 
 [tool.hatch.envs.coverage]
 features = ["coverage"]
