@@ -7,7 +7,7 @@ on:
             - src/**
             - tests/**
             - pyproject.toml
-            - .github/workflows/test.yml
+            - .github/workflows/test.yaml
             - .github/workflows/constraints.txt
     pull_request:
         branches: [ main ]
@@ -15,7 +15,7 @@ on:
             - src/**
             - tests/**
             - pyproject.toml
-            - .github/workflows/test.yml
+            - .github/workflows/test.yaml
             - .github/workflows/constraints.txt
     workflow_dispatch: {}
     schedule:
@@ -70,7 +70,7 @@ jobs:
     test:
         name: Pytest (Python ${{ matrix.python-version }}, ${{ matrix.os }}, SQLAlchemy ${{ matrix.sqlalchemy-version }})
         runs-on: ${{ matrix.os }}
-        continue-on-error: ${{ matrix.python-version == '3.12' }}
+        continue-on-error: ${{ matrix.python-version == '3.13' }}
         strategy:
             fail-fast: false
             matrix:
