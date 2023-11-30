@@ -71,6 +71,8 @@ jobs:
         name: Pytest (Python ${{ matrix.python-version }}, ${{ matrix.os }}, SQLAlchemy ${{ matrix.sqlalchemy-version }})
         runs-on: ${{ matrix.os }}
         continue-on-error: ${{ matrix.python-version == '3.13' }}
+        env:
+          HATCH_VERBOSE: ${{ matrix.python-version == '3.13' && '3' || '0' }}
         strategy:
             fail-fast: false
             matrix:
