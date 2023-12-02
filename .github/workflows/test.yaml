@@ -102,7 +102,7 @@ jobs:
                   architecture: x64
             - name: Setup Python ${{ matrix.python-version }} (nightly)
               if: "${{ matrix.nightly }}"
-              uses: deadsnakes/action@v3.0.1
+              uses: deadsnakes/action@v3.1.0
               with:
                 python-version: "${{ matrix.python-version }}-dev"
 
