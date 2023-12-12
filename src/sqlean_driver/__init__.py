@@ -27,8 +27,8 @@ __version__ = version(__package__)
 class SQLeanTypeCompiler(SQLiteTypeCompiler):
     """A type compiler for SQLite that uses sqlean.py as the DBAPI."""
 
-    def visit_INET(
-        self,  # noqa: PLR6301
+    def visit_INET(  # noqa: PLR6301
+        self,
         type_: TypeEngine[IPAddress],  # noqa: ARG002
         **kw: t.Any,  # noqa: ARG002
     ) -> str:
@@ -101,7 +101,7 @@ class SQLeanDialect(SQLiteDialect_pysqlite):
     @classmethod
     def import_dbapi(cls) -> ModuleType:
         """Return the DBAPI module."""
-        import sqlean
+        import sqlean  # noqa: PLC0415
 
         return sqlean  # type: ignore[no-any-return]
 

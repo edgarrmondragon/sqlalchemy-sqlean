@@ -28,6 +28,7 @@ classifiers = [
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: Implementation :: CPython",
   "Programming Language :: SQL",
   "Topic :: Database",
@@ -41,13 +42,20 @@ dynamic = [
   "version",
 ]
 dependencies = [
-  "greenlet>=3.0.0a1",
   "sqlalchemy>=1.4",
   "sqlean-py>=0.21.5.1",
 ]
 [project.optional-dependencies]
-dev = [
+coverage = [
+  "coverage[toml]>=6.5",
+]
+testing = [
   "pytest",
+  "pytest-github-actions-annotate-failures",
+  "sqlean-driver[coverage]",
+]
+typing = [
+  "mypy>=1",
   'typing-extensions; python_version < "3.10"',
 ]
 [project.urls]
@@ -63,57 +71,56 @@ source = "vcs"
 
 [tool.hatch.envs.test]
 dependencies = [
-  "coverage[toml]>=6.5",
-  "pytest-github-actions-annotate-failures",
   "sqlalchemy=={matrix:sqlalchemy:2}.*",
 ]
-features = ["dev"]
+features = ["testing"]
 matrix-name-format = "{variable}_{value}"
 [tool.hatch.envs.test.env-vars]
 SQLALCHEMY_WARN_20 = "1"
+[tool.hatch.envs.test.overrides]
+env.GITHUB_ACTIONS.dev-mode = { value = false, if = ["true"] }
+
 [tool.hatch.envs.test.scripts]
 run = "pytest {args:tests}"
 cov = "coverage run -m pytest {args:tests}"
 
 [[tool.hatch.envs.test.matrix]]
 sqlalchemy = ["1", "2"]
-python = ["3.8", "3.9", "3.10", "3.11", "3.12"]
+python = ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
 
 [tool.hatch.envs.coverage]
-dependencies = [
-  "coverage[toml]>=6.5",
-]
+features = ["coverage"]
 [tool.hatch.envs.coverage.scripts]
 json = "coverage json"
 xml = "coverage xml"
-report = ["coverage combine", "coverage report --show-missing"]
+report = ["coverage combine --debug=pathmap", "coverage report --show-missing"]
 
 [tool.hatch.envs.typing]
-dependencies = ["mypy>=1.0.0"]
-features = ["dev"]
+features = ["testing", "typing"]
 [tool.hatch.envs.typing.scripts]
 check = "mypy --strict --install-types --non-interactive {args:src/sqlean_driver tests}"
 
 [tool.hatch.envs.lint]
+dependencies = ["ruff>=0.1"]
 detached = true
-dependencies = ["black>=23.1.0", "mypy>=1.0.0", "ruff>=0.0.243"]
 [tool.hatch.envs.lint.scripts]
-style = ["ruff check {args:.}", "black --check --diff {args:.}"]
-style-gh = ["ruff check {args:.} --format github", "black --check --diff {args:.}"]
-fmt = ["black {args:.}", "ruff check --fix {args:.}", "style"]
-
-[tool.black]
-target-version = ["py38"]
-line-length = 100
-skip-string-normalization = true
+style = ["ruff check {args:.}", "ruff format --check --diff {args:.}"]
+style-gh = ["ruff check {args:.} --output-format github", "ruff format --check --diff {args:.}"]
+fmt = ["ruff --fix {args:.}", "ruff format {args:.}"]
 
 [tool.ruff]
+line-length = 100
+target-version = "py38"
+
+[tool.ruff.lint]
 ignore = [
   "ANN101",  # missing-type-self
   "ANN102",  # missing-type-cls
   "FIX002",  # line-contains-todo
+  "COM812",  # missing-trailing-comma
+  "ISC001",  # single-line-implicit-string-concatenation
 ]
-line-length = 100
+preview = true
 select = [
   "F",       # Pyflakes
   "E",       # pycodestyle (error)
@@ -207,49 +214,51 @@ select = [
   "FURB132", # check-and-remove-from-set
   "RUF",     # Ruff-specific rules
 ]
-target-version = "py38"
 unfixable = [
   "ERA",
   "F401",
 ]
 
-[tool.ruff.isort]
+[tool.ruff.lint.isort]
 known-first-party = ["sqlean_driver"]
 required-imports = ["from __future__ import annotations"]
 
-[tool.ruff.flake8-annotations]
+[tool.ruff.lint.flake8-annotations]
 allow-star-arg-any = true
 
-[tool.ruff.flake8-import-conventions]
+[tool.ruff.lint.flake8-import-conventions]
 banned-from = ["typing"]
 
-[tool.ruff.flake8-import-conventions.extend-aliases]
+[tool.ruff.lint.flake8-import-conventions.extend-aliases]
 typing = "t"
 
-[tool.ruff.flake8-tidy-imports]
+[tool.ruff.lint.flake8-tidy-imports]
 ban-relative-imports = "all"
 
-[tool.ruff.pep8-naming]
+[tool.ruff.lint.pep8-naming]
 ignore-names = ["visit_*"]
 
-[tool.ruff.per-file-ignores]
+[tool.ruff.lint.per-file-ignores]
 # Tests can use magic values, assertions, and relative imports
 "tests/**/*" = ["PLR2004", "S101", "TID252", "ANN201"]
 
-[tool.ruff.pydocstyle]
+[tool.ruff.lint.pydocstyle]
 convention = "google"
 
 [tool.pytest.ini_options]
 addopts = ["-vv", "-W error"]
 
-[tool.coverage.run]
-source_pkgs = ["sqlean_driver", "tests"]
-branch = true
-parallel = true
-
 [tool.coverage.paths]
-sqlean_driver = ["src/sqlean_driver", "*/sqlean-driver/src/sqlean_driver"]
-tests = ["tests", "*/sqlean-driver/tests"]
+package = [
+  "src/sqlean_driver/",
+  "*/site-packages/sqlean_driver/",
+]
+
+[tool.coverage.run]
+branch = true
+source = ["sqlean_driver", "tests"]
+parallel = true
+relative_files = true
 
 [tool.coverage.report]
 exclude_lines = [

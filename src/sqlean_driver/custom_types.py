@@ -56,15 +56,15 @@ class INET(sqltypes.TypeEngine[IPAddress]):
 
     __visit_name__ = "INET"
 
-    def bind_processor(
-        self,  # noqa: PLR6301
+    def bind_processor(  # noqa: PLR6301
+        self,
         _dialect: Dialect,
     ) -> _BindProcessorType[IPAddress] | None:
         """Return a bind processor."""
         return none_or_str
 
-    def result_processor(
-        self,  # noqa: PLR6301
+    def result_processor(  # noqa: PLR6301
+        self,
         _dialect: Dialect,
         _coltype: object,
     ) -> _ResultProcessorType[IPAddress] | None:
@@ -109,15 +109,15 @@ class CIDR(sqltypes.TypeEngine[IPNetwork]):
 
     __visit_name__ = "CIDR"
 
-    def bind_processor(
-        self,  # noqa: PLR6301
+    def bind_processor(  # noqa: PLR6301
+        self,
         _dialect: Dialect,
     ) -> _BindProcessorType[IPNetwork] | None:
         """Return a bind processor."""
         return none_or_str
 
-    def result_processor(
-        self,  # noqa: PLR6301
+    def result_processor(  # noqa: PLR6301
+        self,
         _dialect: Dialect,
         _coltype: object,
     ) -> _ResultProcessorType[IPNetwork] | None:
@@ -130,15 +130,15 @@ class UUID(sqltypes.TypeEngine[uuid.UUID]):
 
     __visit_name__ = "UUID"
 
-    def bind_processor(
-        self,  # noqa: PLR6301
+    def bind_processor(  # noqa: PLR6301
+        self,
         _dialect: Dialect,
     ) -> _BindProcessorType[uuid.UUID] | None:
         """Return a bind processor."""
         return none_or_str
 
-    def result_processor(
-        self,  # noqa: PLR6301
+    def result_processor(  # noqa: PLR6301
+        self,
         _dialect: Dialect,
         _coltype: object,
     ) -> _ResultProcessorType[uuid.UUID] | None:

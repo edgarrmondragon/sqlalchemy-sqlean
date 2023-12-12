@@ -7,7 +7,7 @@ on:
             - src/**
             - tests/**
             - pyproject.toml
-            - .github/workflows/test.yml
+            - .github/workflows/test.yaml
             - .github/workflows/constraints.txt
     pull_request:
         branches: [ main ]
@@ -15,7 +15,7 @@ on:
             - src/**
             - tests/**
             - pyproject.toml
-            - .github/workflows/test.yml
+            - .github/workflows/test.yaml
             - .github/workflows/constraints.txt
     workflow_dispatch: {}
     schedule:
@@ -31,11 +31,11 @@ jobs:
         name: Lint
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v3
-            - uses: actions/setup-python@v4
+            - uses: actions/checkout@v4
+            - uses: actions/setup-python@v5
               with:
                   cache: pip
-                  python-version: "3.11"
+                  python-version: "3.12"
             - name: Install dependencies
               env:
                 PIP_CONSTRAINT: .github/workflows/constraints.txt
@@ -51,11 +51,11 @@ jobs:
       name: Typing
       runs-on: ubuntu-latest
       steps:
-          - uses: actions/checkout@v3
-          - uses: actions/setup-python@v4
+          - uses: actions/checkout@v4
+          - uses: actions/setup-python@v5
             with:
                 cache: pip
-                python-version: "3.11"
+                python-version: "3.12"
           - name: Install dependencies
             env:
               PIP_CONSTRAINT: .github/workflows/constraints.txt
@@ -68,30 +68,44 @@ jobs:
               hatch run check
 
     test:
-        name: Pytest (Python ${{ matrix.python-version }}, ${{ matrix.os }}, SQLAlchemy ${{ matrix.sqlalchemy-version }})
+        name: Pytest (Python ${{ matrix.python-version }}, ${{ matrix.os }}, SQLAlchemy ${{ matrix.sqlalchemy-version }})${{ matrix.nightly && ' (nightly)' || '' }}
         runs-on: ${{ matrix.os }}
-        continue-on-error: ${{ matrix.python-version == '3.12' }}
+        continue-on-error: ${{ matrix.python-version == '3.13' }}
         strategy:
             fail-fast: false
             matrix:
                 os: ["ubuntu-latest"]
-                python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
+                python-version: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
                 sqlalchemy-version: ["1", "2"]
                 include:
-                    - python-version: "3.11"
+                    - python-version: "3.12"
                       sqlalchemy-version: "2"
                       os: "windows-latest"
 
-                    - python-version: "3.11"
+                    - python-version: "3.12"
                       sqlalchemy-version: "2"
                       os: "macos-latest"
+
+                    - python-version: "3.13"
+                      sqlalchemy-version: "2"
+                      os: "ubuntu-latest"
+                      nightly: true
+
         steps:
-            - uses: actions/checkout@v3
-            - uses: actions/setup-python@v4
+            - uses: actions/checkout@v4
+            - uses: actions/setup-python@v5
+              if: "${{ !matrix.nightly }}"
               with:
                   cache: pip
                   python-version: ${{ matrix.python-version }}
                   allow-prereleases: true
+                  architecture: x64
+            - name: Setup Python ${{ matrix.python-version }} (nightly)
+              if: "${{ matrix.nightly }}"
+              uses: deadsnakes/action@v3.1.0
+              with:
+                python-version: "${{ matrix.python-version }}-dev"
+
             - name: Install dependencies
               env:
                 PIP_CONSTRAINT: .github/workflows/constraints.txt
@@ -114,8 +128,8 @@ jobs:
         env:
           HATCH_ENV: coverage
         steps:
-            - uses: actions/checkout@v3
-            - uses: actions/setup-python@v4
+            - uses: actions/checkout@v4
+            - uses: actions/setup-python@v5
               with:
                   python-version: "3.11"
             - name: Install dependencies
