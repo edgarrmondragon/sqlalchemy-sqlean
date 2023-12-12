@@ -56,6 +56,7 @@ testing = [
 ]
 typing = [
   "mypy>=1",
+  'typing-extensions; python_version < "3.10"',
 ]
 [project.urls]
 Changelog = "https://github.com/edgarrmondragon/sqlean-driver/blob/main/CHANGELOG.md"
@@ -115,6 +116,7 @@ target-version = "py38"
 ignore = [
   "ANN101",  # missing-type-self
   "ANN102",  # missing-type-cls
+  "FIX002",  # line-contains-todo
   "COM812",  # missing-trailing-comma
   "ISC001",  # single-line-implicit-string-concatenation
 ]
@@ -212,10 +214,17 @@ select = [
   "FURB132", # check-and-remove-from-set
   "RUF",     # Ruff-specific rules
 ]
+unfixable = [
+  "ERA",
+  "F401",
+]
 
 [tool.ruff.lint.isort]
 known-first-party = ["sqlean_driver"]
 required-imports = ["from __future__ import annotations"]
+
+[tool.ruff.lint.flake8-annotations]
+allow-star-arg-any = true
 
 [tool.ruff.lint.flake8-import-conventions]
 banned-from = ["typing"]
@@ -225,6 +234,9 @@ typing = "t"
 
 [tool.ruff.lint.flake8-tidy-imports]
 ban-relative-imports = "all"
+
+[tool.ruff.lint.pep8-naming]
+ignore-names = ["visit_*"]
 
 [tool.ruff.lint.per-file-ignores]
 # Tests can use magic values, assertions, and relative imports
