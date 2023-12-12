@@ -32,7 +32,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v4
-            - uses: actions/setup-python@v4
+            - uses: actions/setup-python@v5
               with:
                   cache: pip
                   python-version: "3.12"
@@ -52,7 +52,7 @@ jobs:
       runs-on: ubuntu-latest
       steps:
           - uses: actions/checkout@v4
-          - uses: actions/setup-python@v4
+          - uses: actions/setup-python@v5
             with:
                 cache: pip
                 python-version: "3.12"
@@ -68,7 +68,7 @@ jobs:
               hatch run check
 
     test:
-        name: Pytest (Python ${{ matrix.python-version }}, ${{ matrix.os }}, SQLAlchemy ${{ matrix.sqlalchemy-version }})
+        name: Pytest (Python ${{ matrix.python-version }}, ${{ matrix.os }}, SQLAlchemy ${{ matrix.sqlalchemy-version }})${{ matrix.nightly && ' (nightly)' || '' }}
         runs-on: ${{ matrix.os }}
         continue-on-error: ${{ matrix.python-version == '3.13' }}
         strategy:
@@ -93,7 +93,7 @@ jobs:
 
         steps:
             - uses: actions/checkout@v4
-            - uses: actions/setup-python@v4
+            - uses: actions/setup-python@v5
               if: "${{ !matrix.nightly }}"
               with:
                   cache: pip
@@ -129,7 +129,7 @@ jobs:
           HATCH_ENV: coverage
         steps:
             - uses: actions/checkout@v4
-            - uses: actions/setup-python@v4
+            - uses: actions/setup-python@v5
               with:
                   python-version: "3.11"
             - name: Install dependencies

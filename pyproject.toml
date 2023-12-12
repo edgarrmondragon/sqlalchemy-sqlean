@@ -107,11 +107,6 @@ style = ["ruff check {args:.}", "ruff format --check --diff {args:.}"]
 style-gh = ["ruff check {args:.} --output-format github", "ruff format --check --diff {args:.}"]
 fmt = ["ruff --fix {args:.}", "ruff format {args:.}"]
 
-[tool.black]
-target-version = ["py38"]
-line-length = 100
-skip-string-normalization = true
-
 [tool.ruff]
 line-length = 100
 target-version = "py38"
