@@ -45,25 +45,22 @@ dependencies = [
   "sqlalchemy>=1.4",
   "sqlean-py>=0.21.5.1",
 ]
-[project.optional-dependencies]
-coverage = [
+optional-dependencies.coverage = [
   "coverage[toml]>=6.5",
 ]
-testing = [
+optional-dependencies.testing = [
   "pytest",
   "pytest-github-actions-annotate-failures",
   "sqlean-driver[coverage]",
 ]
-typing = [
+optional-dependencies.typing = [
   "mypy>=1",
 ]
-[project.urls]
-Changelog = "https://github.com/edgarrmondragon/sqlean-driver/blob/main/CHANGELOG.md"
-Documentation = "https://github.com/edgarrmondragon/sqlean-driver#readme"
-Issues = "https://github.com/edgarrmondragon/sqlean-driver/issues"
-Source = "https://github.com/edgarrmondragon/sqlean-driver"
-[project.entry-points."sqlalchemy.dialects"]
-"sqlite.sqlean" = "sqlean_driver:SQLeanDialect"
+urls.Changelog = "https://github.com/edgarrmondragon/sqlean-driver/blob/main/CHANGELOG.md"
+urls.Documentation = "https://github.com/edgarrmondragon/sqlean-driver#readme"
+urls.Issues = "https://github.com/edgarrmondragon/sqlean-driver/issues"
+urls.Source = "https://github.com/edgarrmondragon/sqlean-driver"
+entry-points."sqlalchemy.dialects"."sqlite.sqlean" = "sqlean_driver:SQLeanDialect"
 
 [tool.hatch.version]
 source = "vcs"
