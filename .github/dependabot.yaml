@@ -34,3 +34,7 @@ updates:
       - "edgarrmondragon"
     commit-message:
       prefix: "ci: "
+    groups:
+      actions:
+        patterns:
+          - "*"

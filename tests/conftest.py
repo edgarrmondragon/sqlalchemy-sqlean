@@ -12,9 +12,13 @@ def pytest_report_header() -> list[str]:
     gh_env_vars = (
         f"{var}={value}" for var, value in os.environ.items() if var.startswith("GITHUB_")
     )
+    coverage_env_vars = (
+        f"{var}={value}" for var, value in os.environ.items() if var.startswith("COVERAGE_")
+    )
     return [
         f"sqlalchemy: {version('sqlalchemy')}",
         f"sqlean.py: {version('sqlean.py')}",
         f"PIP_*: {','.join(pip_env_vars)}",
         f"GITHUB_*: {','.join(gh_env_vars)}",
+        f"COVERAGE_*: {','.join(coverage_env_vars)}",
     ]
