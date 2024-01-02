@@ -26,6 +26,9 @@ concurrency:
     cancel-in-progress: true
     group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
 
+env:
+    FORCE_COLOR: "1"
+
 jobs:
     lint:
         name: Lint
