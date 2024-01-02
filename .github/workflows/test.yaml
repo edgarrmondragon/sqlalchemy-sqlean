@@ -137,7 +137,7 @@ jobs:
                 PIP_CONSTRAINT: .github/workflows/constraints.txt
               run: |
                 pipx install hatch
-            - uses: actions/download-artifact@v3
+            - uses: actions/download-artifact@v4
               with:
                 name: coverage-data
             - name: Combine coverage data
