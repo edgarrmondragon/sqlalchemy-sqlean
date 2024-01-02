@@ -75,6 +75,9 @@ matrix-name-format = "{variable}_{value}"
 SQLALCHEMY_WARN_20 = "1"
 [tool.hatch.envs.test.overrides]
 env.GITHUB_ACTIONS.dev-mode = { value = false, if = ["true"] }
+matrix.python.env-vars = [
+  { key = "COVERAGE_CORE", value = "sysmon", if = ["3.12", "3.13"] }
+]
 
 [tool.hatch.envs.test.scripts]
 run = "pytest {args:tests}"
