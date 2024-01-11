@@ -83,23 +83,23 @@ class INET(sqltypes.TypeEngine[IPAddress]):
 
         def ipfamily(self) -> _IPAddrIPFamilyFunction:
             """Return the IP family."""
-            return _IPAddrIPFamilyFunction(self.expr)  # type: ignore[no-untyped-call]
+            return _IPAddrIPFamilyFunction(self.expr)
 
         def iphost(self) -> _IPAddrIPHostFunction:
             """Return the IP host."""
-            return _IPAddrIPHostFunction(self.expr)  # type: ignore[no-untyped-call]
+            return _IPAddrIPHostFunction(self.expr)
 
         def ipmasklen(self) -> _IPAddrIPMaskLenFunction:
             """Return the IP mask length."""
-            return _IPAddrIPMaskLenFunction(self.expr)  # type: ignore[no-untyped-call]
+            return _IPAddrIPMaskLenFunction(self.expr)
 
         def ipnetwork(self) -> _IPAddrIPNetworkFunction:
             """Return the IP network."""
-            return _IPAddrIPNetworkFunction(self.expr)  # type: ignore[no-untyped-call]
+            return _IPAddrIPNetworkFunction(self.expr)
 
         def ipcontains(self, other: IPAddress | str) -> _IPAddrIPContainsFunction:
             """Return whether the IP address contains another IP address."""
-            return _IPAddrIPContainsFunction(self.expr, other)  # type: ignore[no-untyped-call]
+            return _IPAddrIPContainsFunction(self.expr, other)
 
     comparator_factory = Comparator
 
