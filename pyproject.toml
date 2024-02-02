@@ -11,7 +11,7 @@ description = "SQLAlchemy dialect for the sqlean.py SQLite wrapper"
 readme = "README.md"
 keywords = [
 ]
-license = "MIT"
+license.file = "LICENSE.txt"
 maintainers = [{ name = "Edgar Ramírez Mondragón", email = "edgarrm358@gmail.com" }]
 authors = [{ name = "Edgar Ramírez Mondragón", email = "edgarrm358@gmail.com" }]
 requires-python = ">=3.8"
@@ -65,29 +65,37 @@ entry-points."sqlalchemy.dialects"."sqlite.sqlean" = "sqlean_driver:SQLeanDialec
 [tool.hatch.version]
 source = "vcs"
 
-[tool.hatch.envs.test]
+[tool.hatch.envs.default]
 dependencies = [
   "sqlalchemy=={matrix:sqlalchemy:2}.*",
 ]
 features = ["testing"]
 matrix-name-format = "{variable}_{value}"
-[tool.hatch.envs.test.env-vars]
+[tool.hatch.envs.default.env-vars]
 SQLALCHEMY_WARN_20 = "1"
-[tool.hatch.envs.test.overrides]
+[tool.hatch.envs.default.overrides]
 env.GITHUB_ACTIONS.dev-mode = { value = false, if = ["true"] }
 matrix.python.env-vars = [
   { key = "COVERAGE_CORE", value = "sysmon", if = ["3.12", "3.13"] }
 ]
 
-[tool.hatch.envs.test.scripts]
-run = "pytest {args:tests}"
+[tool.hatch.envs.default.scripts]
+test = "pytest {args:tests}"
 cov = "coverage run -m pytest {args:tests}"
 
-[[tool.hatch.envs.test.matrix]]
+[[tool.hatch.envs.all.matrix]]
 sqlalchemy = ["1", "2"]
-python = ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
+python = [
+  "3.8",
+  "3.9",
+  "3.10",
+  "3.11",
+  "3.12",
+  "3.13",
+]
 
 [tool.hatch.envs.coverage]
+detached = true
 features = ["coverage"]
 [tool.hatch.envs.coverage.scripts]
 json = "coverage json"
@@ -96,6 +104,7 @@ report = ["coverage combine --debug=pathmap", "coverage report --show-missing"]
 
 [tool.hatch.envs.typing]
 features = ["testing", "typing"]
+template = "typing"
 [tool.hatch.envs.typing.scripts]
 check = "mypy --strict --install-types --non-interactive {args:src/sqlean_driver tests}"
 
