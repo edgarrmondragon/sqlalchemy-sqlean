@@ -1,156 +1,158 @@
 name: Test
 
 on:
-    push:
-        branches: [ main ]
-        paths:
-            - src/**
-            - tests/**
-            - pyproject.toml
-            - .github/workflows/test.yaml
-            - .github/workflows/constraints.txt
-    pull_request:
-        branches: [ main ]
-        paths:
-            - src/**
-            - tests/**
-            - pyproject.toml
-            - .github/workflows/test.yaml
-            - .github/workflows/constraints.txt
-    workflow_dispatch: {}
-    schedule:
-      # Run every 27 hours to avoid running at the same time every day
-      - cron: "40 12 * * 1-5"
+  push:
+    branches: [main]
+    paths:
+      - src/**
+      - tests/**
+      - pyproject.toml
+      - .github/workflows/test.yaml
+      - .github/workflows/constraints.txt
+  pull_request:
+    branches: [main]
+    paths:
+      - src/**
+      - tests/**
+      - pyproject.toml
+      - .github/workflows/test.yaml
+      - .github/workflows/constraints.txt
+  workflow_dispatch: {}
+  schedule:
+    # Run every 27 hours to avoid running at the same time every day
+    - cron: "40 12 * * 1-5"
 
 concurrency:
-    cancel-in-progress: true
-    group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
 
 env:
-    FORCE_COLOR: "1"
+  FORCE_COLOR: "1"
 
 jobs:
-    lint:
-        name: Lint
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v4
-            - uses: actions/setup-python@v5
-              with:
-                  cache: pip
-                  python-version: "3.12"
-            - name: Install dependencies
-              env:
-                PIP_CONSTRAINT: .github/workflows/constraints.txt
-              run: |
-                pipx install hatch
-            - name: Run lint
-              env:
-                HATCH_ENV: lint
-              run: |
-                hatch run style-gh
-
-    typing:
-      name: Typing
-      runs-on: ubuntu-latest
-      steps:
-          - uses: actions/checkout@v4
-          - uses: actions/setup-python@v5
-            with:
-                cache: pip
-                python-version: "3.12"
-          - name: Install dependencies
-            env:
-              PIP_CONSTRAINT: .github/workflows/constraints.txt
-            run: |
-              pipx install hatch
-          - name: Run typing
-            env:
-              HATCH_ENV: typing
-            run: |
-              hatch run check
-
-    test:
-        name: Pytest (Python ${{ matrix.python-version }}, ${{ matrix.os }}, SQLAlchemy ${{ matrix.sqlalchemy-version }})${{ matrix.nightly && ' (nightly)' || '' }}
-        runs-on: ${{ matrix.os }}
-        continue-on-error: ${{ matrix.python-version == '3.13' }}
-        strategy:
-            fail-fast: false
-            matrix:
-                os: ["ubuntu-latest"]
-                python-version: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
-                sqlalchemy-version: ["1", "2"]
-                include:
-                    - python-version: "3.12"
-                      sqlalchemy-version: "2"
-                      os: "windows-latest"
-
-                    - python-version: "3.12"
-                      sqlalchemy-version: "2"
-                      os: "macos-latest"
-
-                    - python-version: "3.13"
-                      sqlalchemy-version: "2"
-                      os: "ubuntu-latest"
-                      nightly: true
-
-        steps:
-            - uses: actions/checkout@v4
-            - uses: actions/setup-python@v5
-              if: "${{ !matrix.nightly }}"
-              with:
-                  cache: pip
-                  python-version: ${{ matrix.python-version }}
-                  allow-prereleases: true
-                  architecture: x64
-            - name: Setup Python ${{ matrix.python-version }} (nightly)
-              if: "${{ matrix.nightly }}"
-              uses: deadsnakes/action@v3.1.0
-              with:
-                python-version: "${{ matrix.python-version }}-dev"
-
-            - name: Install dependencies
-              env:
-                PIP_CONSTRAINT: .github/workflows/constraints.txt
-              run: |
-                pipx install hatch
-            - name: Run tests
-              env:
-                HATCH_ENV: "test.py${{ matrix.python-version }}-sqlalchemy_${{ matrix.sqlalchemy-version }}"
-              run: |
-                hatch run cov
-            - uses: actions/upload-artifact@v4
-              with:
-                name: coverage-data-${{ matrix.os }}-py${{ matrix.python-version }}-sqlalchemy_${{ matrix.sqlalchemy-version }}
-                path: ".coverage.*"
-
-    coverage:
-        name: Coverage
-        runs-on: ubuntu-latest
-        needs: test
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          cache: pip
+          python-version: "3.12"
+      - name: Install dependencies
         env:
-          HATCH_ENV: coverage
-        steps:
-            - uses: actions/checkout@v4
-            - uses: actions/setup-python@v5
-              with:
-                  python-version: "3.11"
-            - name: Install dependencies
-              env:
-                PIP_CONSTRAINT: .github/workflows/constraints.txt
-              run: |
-                pipx install hatch
-            - uses: actions/download-artifact@v4
-              with:
-                pattern: coverage-data-*
-                merge-multiple: true
-            - name: Combine coverage data
-              run: |
-                hatch run report
-            - name: Create coverage XML report
-              run: |
-                hatch run xml
-            - uses: codecov/codecov-action@v4
-              with:
-                fail_ci_if_error: true
-                token: ${{ secrets.CODECOV_TOKEN }}
+          PIP_CONSTRAINT: .github/workflows/constraints.txt
+        run: |
+          pipx install hatch
+      - name: Run lint
+        env:
+          HATCH_ENV: lint
+        run: |
+          hatch run style-gh
+
+  typing:
+    name: Typing
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          cache: pip
+          python-version: "3.12"
+      - name: Install dependencies
+        env:
+          PIP_CONSTRAINT: .github/workflows/constraints.txt
+        run: |
+          pipx install hatch
+      - name: Run typing
+        run: |
+          hatch run typing:check
+
+  test:
+    name: Pytest (Python ${{ matrix.python-version }}, ${{ matrix.os }}, SQLAlchemy ${{ matrix.sqlalchemy-version }})${{ matrix.nightly && ' (nightly)' || '' }}
+    runs-on: ${{ matrix.os }}
+    continue-on-error: ${{ matrix.python-version == '3.13' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ["ubuntu-latest"]
+        python-version:
+          - "3.8"
+          - "3.9"
+          - "3.10"
+          - "3.11"
+          - "3.12"
+          - "3.13"
+        sqlalchemy-version: ["1", "2"]
+        include:
+          - python-version: "3.12"
+            sqlalchemy-version: "2"
+            os: "windows-latest"
+
+          - python-version: "3.12"
+            sqlalchemy-version: "2"
+            os: "macos-latest"
+
+          - python-version: "3.13"
+            sqlalchemy-version: "2"
+            os: "ubuntu-latest"
+            nightly: true
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        if: "${{ !matrix.nightly }}"
+        with:
+          cache: pip
+          python-version: ${{ matrix.python-version }}
+          allow-prereleases: true
+          architecture: x64
+      - name: Setup Python ${{ matrix.python-version }} (nightly)
+        if: "${{ matrix.nightly }}"
+        uses: deadsnakes/action@v3.1.0
+        with:
+          python-version: "${{ matrix.python-version }}-dev"
+
+      - name: Install dependencies
+        env:
+          PIP_CONSTRAINT: .github/workflows/constraints.txt
+        run: |
+          pipx install hatch
+      - name: Run tests
+        run: |
+          hatch run cov
+      - uses: actions/upload-artifact@v4
+        with:
+          name: coverage-data-${{ matrix.os }}-py${{ matrix.python-version }}-sqlalchemy_${{ matrix.sqlalchemy-version }}
+          path: ".coverage.*"
+
+  coverage:
+    name: Coverage
+    runs-on: ubuntu-latest
+    needs: test
+    env:
+      HATCH_ENV: coverage
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        env:
+          PIP_CONSTRAINT: .github/workflows/constraints.txt
+        run: |
+          pipx install hatch
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: coverage-data-*
+          merge-multiple: true
+      - name: Combine coverage data
+        run: |
+          hatch run report
+      - name: Create coverage XML report
+        run: |
+          hatch run xml
+      - uses: codecov/codecov-action@v4
+        with:
+          fail_ci_if_error: true
+          token: ${{ secrets.CODECOV_TOKEN }}
