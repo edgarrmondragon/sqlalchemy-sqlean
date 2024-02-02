@@ -51,7 +51,7 @@ class uuid4(GenericFunction[uuid.UUID]):  # noqa: N801
     """
 
     name = "uuid4"
-    type = UUID()  # noqa: A003
+    type = UUID()
     inherit_cache = True
 
 
@@ -68,7 +68,7 @@ class uuid_str(GenericFunction[uuid.UUID]):  # noqa: N801
     """
 
     name = "uuid_str"
-    type = UUID()  # noqa: A003
+    type = UUID()
     inherit_cache = True
 
 
@@ -79,7 +79,7 @@ class uuid_blob(GenericFunction[bytes]):  # noqa: N801
     """
 
     name = "uuid_blob"
-    type = sqltypes.BLOB()  # noqa: A003
+    type = sqltypes.BLOB()
     inherit_cache = True
 
 

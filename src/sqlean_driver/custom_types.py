@@ -150,7 +150,7 @@ class _IPAddrIPFamilyFunction(GenericFunction[int]):
     """Returns the family of a specified IP address."""
 
     name = "ipfamily"
-    type = sqltypes.Integer()  # noqa: A003
+    type = sqltypes.Integer()
     inherit_cache = True
 
 
@@ -158,7 +158,7 @@ class _IPAddrIPHostFunction(GenericFunction[str]):
     """Returns the host part of an IP address."""
 
     name = "iphost"
-    type = sqltypes.String()  # noqa: A003
+    type = sqltypes.String()
     inherit_cache = True
 
 
@@ -166,7 +166,7 @@ class _IPAddrIPMaskLenFunction(GenericFunction[int]):
     """Returns the prefix length of an IP address."""
 
     name = "ipmasklen"
-    type = sqltypes.Integer()  # noqa: A003
+    type = sqltypes.Integer()
     inherit_cache = True
 
 
@@ -174,7 +174,7 @@ class _IPAddrIPNetworkFunction(GenericFunction[IPNetwork]):
     """Returns the network part of an IP address."""
 
     name = "ipnetwork"
-    type = CIDR()  # noqa: A003
+    type = CIDR()
     inherit_cache = True
 
 
@@ -182,5 +182,5 @@ class _IPAddrIPContainsFunction(GenericFunction[bool]):
     """Returns whether an IP address contains another IP address."""
 
     name = "ipcontains"
-    type = sqltypes.Boolean()  # noqa: A003
+    type = sqltypes.Boolean()
     inherit_cache = True
