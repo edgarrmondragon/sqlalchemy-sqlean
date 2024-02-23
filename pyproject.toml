@@ -46,7 +46,7 @@ dependencies = [
   "sqlean-py>=0.21.5.1",
 ]
 optional-dependencies.coverage = [
-  "coverage[toml]>=6.5",
+  "coverage[toml]>=7.4.2",
 ]
 optional-dependencies.testing = [
   "pytest",
@@ -73,12 +73,10 @@ dependencies = [
 features = ["testing"]
 matrix-name-format = "{variable}_{value}"
 [tool.hatch.envs.default.env-vars]
+COVERAGE_CORE = "sysmon"
 SQLALCHEMY_WARN_20 = "1"
 [tool.hatch.envs.default.overrides]
 env.GITHUB_ACTIONS.dev-mode = { value = false, if = ["true"] }
-matrix.python.env-vars = [
-  { key = "COVERAGE_CORE", value = "sysmon", if = ["3.12", "3.13"] }
-]
 
 [tool.hatch.envs.default.scripts]
 test = "pytest {args:tests}"
