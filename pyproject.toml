@@ -12,8 +12,12 @@ readme = "README.md"
 keywords = [
 ]
 license.file = "LICENSE.txt"
-maintainers = [{ name = "Edgar Ramírez Mondragón", email = "edgarrm358@gmail.com" }]
-authors = [{ name = "Edgar Ramírez Mondragón", email = "edgarrm358@gmail.com" }]
+maintainers = [
+  { name = "Edgar Ramírez Mondragón", email = "edgarrm358@gmail.com" },
+]
+authors = [
+  { name = "Edgar Ramírez Mondragón", email = "edgarrm358@gmail.com" },
+]
 requires-python = ">=3.8"
 classifiers = [
   "Development Status :: 4 - Beta",
@@ -69,20 +73,27 @@ source = "vcs"
 dependencies = [
   "sqlalchemy=={matrix:sqlalchemy:2}.*",
 ]
-features = ["testing"]
+features = [
+  "testing",
+]
 matrix-name-format = "{variable}_{value}"
 [tool.hatch.envs.default.env-vars]
 COVERAGE_CORE = "sysmon"
 SQLALCHEMY_WARN_20 = "1"
 [tool.hatch.envs.default.overrides]
-env.GITHUB_ACTIONS.dev-mode = { value = false, if = ["true"] }
+env.GITHUB_ACTIONS.dev-mode = { value = false, if = [
+  "true",
+] }
 
 [tool.hatch.envs.default.scripts]
 test = "pytest {args:tests}"
 cov = "coverage run -m pytest {args:tests}"
 
 [[tool.hatch.envs.all.matrix]]
-sqlalchemy = ["1", "2"]
+sqlalchemy = [
+  "1",
+  "2",
+]
 python = [
   "3.8",
   "3.9",
@@ -94,35 +105,54 @@ python = [
 
 [tool.hatch.envs.coverage]
 detached = true
-features = ["coverage"]
+features = [
+  "coverage",
+]
 [tool.hatch.envs.coverage.scripts]
 json = "coverage json"
 xml = "coverage xml"
-report = ["coverage combine --debug=pathmap", "coverage report --show-missing"]
+report = [
+  "coverage combine --debug=pathmap",
+  "coverage report --show-missing",
+]
 
 [tool.hatch.envs.typing]
-features = ["testing", "typing"]
+features = [
+  "testing",
+  "typing",
+]
 template = "typing"
 [tool.hatch.envs.typing.scripts]
 check = "mypy --strict --install-types --non-interactive {args:src/sqlean_driver tests}"
 
 [tool.hatch.envs.lint]
-dependencies = ["ruff>=0.1"]
+dependencies = [
+  "ruff>=0.1",
+]
 detached = true
 [tool.hatch.envs.lint.scripts]
-style = ["ruff check {args:.}", "ruff format --check --diff {args:.}"]
-style-gh = ["ruff check {args:.} --output-format github", "ruff format --check --diff {args:.}"]
-fmt = ["ruff --fix {args:.}", "ruff format {args:.}"]
+style = [
+  "ruff check {args:.}",
+  "ruff format --check --diff {args:.}",
+]
+style-gh = [
+  "ruff check {args:.} --output-format github",
+  "ruff format --check --diff {args:.}",
+]
+fmt = [
+  "ruff --fix {args:.}",
+  "ruff format {args:.}",
+]
 
 [tool.ruff]
 line-length = 100
 
 [tool.ruff.lint]
 ignore = [
-  "ANN101",  # missing-type-self
-  "ANN102",  # missing-type-cls
-  "COM812",  # missing-trailing-comma
-  "ISC001",  # single-line-implicit-string-concatenation
+  "ANN101", # missing-type-self
+  "ANN102", # missing-type-cls
+  "COM812", # missing-trailing-comma
+  "ISC001", # single-line-implicit-string-concatenation
 ]
 preview = true
 select = [
@@ -220,11 +250,17 @@ select = [
 ]
 
 [tool.ruff.lint.isort]
-known-first-party = ["sqlean_driver"]
-required-imports = ["from __future__ import annotations"]
+known-first-party = [
+  "sqlean_driver",
+]
+required-imports = [
+  "from __future__ import annotations",
+]
 
 [tool.ruff.lint.flake8-import-conventions]
-banned-from = ["typing"]
+banned-from = [
+  "typing",
+]
 
 [tool.ruff.lint.flake8-import-conventions.extend-aliases]
 typing = "t"
@@ -234,13 +270,21 @@ ban-relative-imports = "all"
 
 [tool.ruff.lint.per-file-ignores]
 # Tests can use magic values, assertions, and relative imports
-"tests/**/*" = ["PLR2004", "S101", "TID252", "ANN201"]
+"tests/**/*" = [
+  "PLR2004",
+  "S101",
+  "TID252",
+  "ANN201",
+]
 
 [tool.ruff.lint.pydocstyle]
 convention = "google"
 
 [tool.pytest.ini_options]
-addopts = ["-vv", "-W error"]
+addopts = [
+  "-vv",
+  "-W error",
+]
 
 [tool.coverage.paths]
 package = [
@@ -250,13 +294,17 @@ package = [
 
 [tool.coverage.run]
 branch = true
-source = ["sqlean_driver", "tests"]
+source = [
+  "sqlean_driver",
+  "tests",
+]
 parallel = true
 relative_files = true
 
 [tool.coverage.report]
 exclude_lines = [
-  "no cov", "if __name__ == .__main__.:",
+  "no cov",
+  "if __name__ == .__main__.:",
   "if t.TYPE_CHECKING:",
 ]
 
