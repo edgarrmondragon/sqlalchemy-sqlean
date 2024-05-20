@@ -147,16 +147,17 @@ fmt = [
 [tool.ruff]
 line-length = 100
 
-[tool.ruff.lint]
-ignore = [
-  "ANN101", # missing-type-self
-  "ANN102", # missing-type-cls
-  "COM812", # missing-trailing-comma
-  "ISC001", # single-line-implicit-string-concatenation
-]
-preview = true
-select = [
-  "F",       # Pyflakes
+lint.select = [
+  "A",       # flake8-builtins
+  "ANN",     # flake8-annotations
+  "ARG",     # flake8-unused-arguments
+  "B",       # flake8-bugbear
+  "BLE",     # flake8-blind-except
+  "C4",      # flake8-comprehensions
+  "C90",     # mccabe
+  "COM",     # flake8-commas
+  "D",       # pydocstyle
+  "DTZ",     # flake8-datetimez
   "E",       # pycodestyle (error)
   "E111",    # indentation-with-invalid-multiple
   "E112",    # no-indented-bloc
@@ -191,47 +192,26 @@ select = [
   "E273",    # tab-after-keyword
   "E274",    # tab-before-keyword
   "E275",    # missing-whitespace-after-keyword
-  "W",       # pycodestyle (warning)
-  "C90",     # mccabe
-  "I",       # isort
-  "N",       # pep8-naming
-  "D",       # pydocstyle
-  "UP",      # pyupgrade
-  "YTT",     # flake8-2020
-  "ANN",     # flake8-annotations
-  "S",       # bandit
-  "BLE",     # flake8-blind-except
-  "FBT",     # flake8-boolean-trap
-  "B",       # flake8-bugbear
-  "A",       # flake8-builtins
-  "COM",     # flake8-commas
-  "C4",      # flake8-comprehensions
-  "DTZ",     # flake8-datetimez
-  "T10",     # flake8-debugger
   "EM",      # flake8-errmsg
-  "FA",      # flake8-future-annotations
-  "ISC",     # flake8-implicit-str-concat
-  "ICN",     # flake8-import-conventions
-  "G",       # flake8-logging-format
-  "INP",     # flake8-no-pep420
-  "PIE",     # flake8-pie
-  "T20",     # flake8-print
-  "PT",      # flake8-pytest-style
-  "Q",       # flake8-quotes
-  "RSE",     # flake8-raise
-  "RET",     # flake8-return
-  "SLF",     # flake8-self
-  "SLOT",    # flake8-slots
-  "SIM",     # flake8-simplify
-  "TID",     # flake8-tidy-imports
-  "TCH",     # flake8-type-checking
-  "ARG",     # flake8-unused-arguments
-  "PTH",     # flake8-use-pathlib
-  "TD",      # flake8-todos
-  "FIX",     # flake8-fixme
   "ERA",     # flake8-eradicate
+  "F",       # Pyflakes
+  "FA",      # flake8-future-annotations
+  "FBT",     # flake8-boolean-trap
+  "FIX",     # flake8-fixme
+  "FLY",     # flynt
+  "FURB113", # repeated-append
+  "FURB131", # delete-full-slice
+  "FURB132", # check-and-remove-from-set
+  "G",       # flake8-logging-format
+  "I",       # isort
+  "ICN",     # flake8-import-conventions
+  "INP",     # flake8-no-pep420
+  "ISC",     # flake8-implicit-str-concat
+  "N",       # pep8-naming
   "PD",      # pandas-vet
+  "PERF",    # perflint
   "PGH",     # pygrep-hooks
+  "PIE",     # flake8-pie
   "PLC",     # pylint
   "PLC1901", # compare-to-empty-string
   "PLE",     # pylint
@@ -240,45 +220,52 @@ select = [
   "PLW",     # pylint
   "PLW1641", # eq-without-hash
   "PLW3201", # bad-dunder-method-name
-  "TRY",     # tryceratops
-  "FLY",     # flynt
-  "PERF",    # perflint
-  "FURB113", # repeated-append
-  "FURB131", # delete-full-slice
-  "FURB132", # check-and-remove-from-set
+  "PT",      # flake8-pytest-style
+  "PTH",     # flake8-use-pathlib
+  "Q",       # flake8-quotes
+  "RET",     # flake8-return
+  "RSE",     # flake8-raise
   "RUF",     # Ruff-specific rules
+  "S",       # bandit
+  "SIM",     # flake8-simplify
+  "SLF",     # flake8-self
+  "SLOT",    # flake8-slots
+  "T10",     # flake8-debugger
+  "T20",     # flake8-print
+  "TCH",     # flake8-type-checking
+  "TD",      # flake8-todos
+  "TID",     # flake8-tidy-imports
+  "TRY",     # tryceratops
+  "UP",      # pyupgrade
+  "W",       # pycodestyle (warning)
+  "YTT",     # flake8-2020
 ]
-
-[tool.ruff.lint.isort]
-known-first-party = [
-  "sqlean_driver",
-]
-required-imports = [
-  "from __future__ import annotations",
-]
-
-[tool.ruff.lint.flake8-import-conventions]
-banned-from = [
-  "typing",
-]
-
-[tool.ruff.lint.flake8-import-conventions.extend-aliases]
-typing = "t"
-
-[tool.ruff.lint.flake8-tidy-imports]
-ban-relative-imports = "all"
-
-[tool.ruff.lint.per-file-ignores]
-# Tests can use magic values, assertions, and relative imports
-"tests/**/*" = [
+lint.per-file-ignores."tests/**/*" = [
+  "ANN201",
   "PLR2004",
   "S101",
   "TID252",
-  "ANN201",
 ]
-
-[tool.ruff.lint.pydocstyle]
-convention = "google"
+lint.flake8-import-conventions.banned-from = [
+  "typing",
+]
+lint.flake8-import-conventions.extend-aliases.typing = "t"
+lint.flake8-tidy-imports.ban-relative-imports = "all"
+lint.isort.known-first-party = [
+  "sqlean_driver",
+]
+lint.isort.required-imports = [
+  "from __future__ import annotations",
+]
+# Tests can use magic values, assertions, and relative imports
+lint.pydocstyle.convention = "google"
+lint.ignore = [
+  "ANN101", # missing-type-self
+  "ANN102", # missing-type-cls
+  "COM812", # missing-trailing-comma
+  "ISC001", # single-line-implicit-string-concatenation
+]
+lint.preview = true
 
 [tool.pytest.ini_options]
 addopts = [
