@@ -17,7 +17,7 @@ if t.TYPE_CHECKING:
     from sqlalchemy.sql.selectable import Select
 
 
-@pytest.fixture()
+@pytest.fixture
 def engine() -> Engine:
     """Return a SQLAlchemy engine."""
     url = "sqlite+sqlean:///:memory:"
