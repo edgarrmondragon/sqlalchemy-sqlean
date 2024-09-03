@@ -126,6 +126,7 @@ jobs:
           hatch run cov
       - uses: actions/upload-artifact@v4
         with:
+          include-hidden-files: true
           name: coverage-data-${{ matrix.os }}-py${{ matrix.python-version }}-sqlalchemy_${{ matrix.sqlalchemy-version }}
           path: ".coverage.*"
 
