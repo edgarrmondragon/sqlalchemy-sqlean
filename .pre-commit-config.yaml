@@ -3,12 +3,12 @@ ci:
   autofix_prs: true
   autoupdate_branch: main
   autoupdate_commit_msg: "chore: Update pre-commit hooks"
-  autoupdate_schedule: weekly
+  autoupdate_schedule: monthly
   submodules: false
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.6.0
+    rev: v5.0.0
     hooks:
       - id: check-merge-conflict
       - id: check-toml
@@ -18,7 +18,7 @@ repos:
       - id: trailing-whitespace
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.6.8
+    rev: v0.6.9
     hooks:
       - id: ruff
         name: Ruff lint
