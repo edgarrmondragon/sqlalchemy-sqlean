@@ -38,7 +38,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           cache: pip
-          python-version: "3.12"
+          python-version: "3.x"
       - name: Install dependencies
         env:
           PIP_CONSTRAINT: ${{ github.workspace }}/.github/workflows/constraints.txt
@@ -59,7 +59,7 @@ jobs:
         id: setup-python
         with:
           cache: pip
-          python-version: "3.12"
+          python-version: "3.x"
       - name: Install dependencies
         env:
           PIP_CONSTRAINT: ${{ github.workspace }}/.github/workflows/constraints.txt
@@ -94,25 +94,13 @@ jobs:
             sqlalchemy-version: "2"
             os: "macos-latest"
 
-          - python-version: "3.13"
-            sqlalchemy-version: "2"
-            os: "ubuntu-latest"
-            nightly: true
-
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
-        if: "${{ !matrix.nightly }}"
         with:
           cache: pip
           python-version: ${{ matrix.python-version }}
           allow-prereleases: true
-          architecture: x64
-      - name: Setup Python ${{ matrix.python-version }} (nightly)
-        if: "${{ matrix.nightly }}"
-        uses: deadsnakes/action@v3.2.0
-        with:
-          python-version: "${{ matrix.python-version }}-dev"
 
       - name: Install dependencies
         env:
@@ -141,7 +129,7 @@ jobs:
       - uses: actions/setup-python@v5
         id: setup-python
         with:
-          python-version: "3.12"
+          python-version: "3.x"
       - name: Install dependencies
         env:
           PIP_CONSTRAINT: ${{ github.workspace }}/.github/workflows/constraints.txt
