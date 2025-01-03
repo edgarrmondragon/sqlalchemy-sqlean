@@ -8,6 +8,7 @@ from importlib.metadata import version
 from sqlalchemy.dialects.sqlite.pysqlite import SQLiteDialect_pysqlite
 
 if t.TYPE_CHECKING:
+    from collections.abc import Callable
     from types import ModuleType
 
     from sqlalchemy.engine.url import URL
@@ -37,7 +38,7 @@ class SQLeanDialect(SQLiteDialect_pysqlite):
 
         return sqlean  # type: ignore[no-any-return]
 
-    def on_connect_url(self, url: URL) -> t.Callable[[t.Any], t.Any] | None:
+    def on_connect_url(self, url: URL) -> Callable[[t.Any], t.Any] | None:
         """Return a callable that will be executed on connect."""
         query = url.query.get("extensions", ())
         extensions = query if isinstance(query, tuple) else query.split(",")
