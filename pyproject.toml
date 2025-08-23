@@ -61,6 +61,7 @@ optional-dependencies.testing = [
 ]
 optional-dependencies.typing = [
   "mypy>=1",
+  "typing-extensions; python_version<'3.10'",
 ]
 urls.Changelog = "https://github.com/edgarrmondragon/sqlean-driver/blob/main/CHANGELOG.md"
 urls.Documentation = "https://github.com/edgarrmondragon/sqlean-driver#readme"
@@ -249,6 +250,7 @@ lint.ignore = [
   "ANN101", # missing-type-self
   "ANN102", # missing-type-cls
   "COM812", # missing-trailing-comma
+  "FIX002", # line-contains-todo
   "ISC001", # single-line-implicit-string-concatenation
 ]
 lint.per-file-ignores."tests/**/*" = [
@@ -257,6 +259,12 @@ lint.per-file-ignores."tests/**/*" = [
   "S101",
   "TID252",
 ]
+lint.unfixable = [
+  "ERA",
+  "F401",
+]
+lint.flake8-annotations.allow-star-arg-any = true
+
 lint.flake8-import-conventions.banned-from = [
   "typing",
 ]
@@ -267,6 +275,9 @@ lint.isort.known-first-party = [
 ]
 lint.isort.required-imports = [
   "from __future__ import annotations",
+]
+lint.pep8-naming.ignore-names = [
+  "visit_*",
 ]
 # Tests can use magic values, assertions, and relative imports
 lint.pydocstyle.convention = "google"
