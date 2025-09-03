@@ -34,7 +34,7 @@ jobs:
     name: Lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: actions/setup-python@v5
         with:
           cache: pip
@@ -54,7 +54,7 @@ jobs:
     name: Typing
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: actions/setup-python@v5
         id: setup-python
         with:
@@ -95,7 +95,7 @@ jobs:
             os: "macos-latest"
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: actions/setup-python@v5
         with:
           cache: pip
@@ -125,7 +125,7 @@ jobs:
     env:
       HATCH_ENV: coverage
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: actions/setup-python@v5
         id: setup-python
         with:
@@ -135,7 +135,7 @@ jobs:
           PIP_CONSTRAINT: ${{ github.workspace }}/.github/workflows/constraints.txt
         run: |
           pipx install --python '${{ steps.setup-python.outputs.python-path }}' hatch
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v5
         with:
           pattern: coverage-data-*
           merge-multiple: true
